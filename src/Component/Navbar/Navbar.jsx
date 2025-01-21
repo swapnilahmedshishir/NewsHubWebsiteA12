@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../../Context/ContextProvider";
 
-const Navbar = ({ user, isAdmin, hasSubscription }) => {
+const Navbar = () => {
+  // { user, isAdmin, hasSubscription }
+
+  const { user, logoutUser, theme, toggleTheme } = useContext(AppContext);
+
+  console.log(user);
+
+  // Log out the user
+  const handleLogout = () => {
+    logoutUser()
+      .then(() => {
+        toast.success("Logged out successfully!");
+      })
+      .catch((error) => {
+        toast.error("Failed to log out. Please try again.");
+      });
+  };
+
   return (
     <nav className="navbar bg-base-100 shadow-md">
       {/* Navbar Start */}
@@ -39,19 +57,19 @@ const Navbar = ({ user, isAdmin, hasSubscription }) => {
             <li>
               <a href="/subscription">Subscription</a>
             </li>
-            {isAdmin && (
+            {/* {isAdmin && (
               <li>
                 <a href="/dashboard">Dashboard</a>
               </li>
-            )}
+            )} */}
             <li>
               <a href="/my-articles">My Articles</a>
             </li>
-            {hasSubscription && (
+            {/* {hasSubscription && (
               <li>
                 <a href="/premium-articles">Premium Articles</a>
               </li>
-            )}
+            )} */}
           </ul>
         </div>
         <a href="/" className="btn btn-ghost text-xl">
@@ -74,19 +92,19 @@ const Navbar = ({ user, isAdmin, hasSubscription }) => {
           <li>
             <a href="/subscription">Subscription</a>
           </li>
-          {isAdmin && (
+          {/* {isAdmin && (
             <li>
               <a href="/dashboard">Dashboard</a>
             </li>
-          )}
+          )} */}
           <li>
             <a href="/my-articles">My Articles</a>
           </li>
-          {hasSubscription && (
+          {/* {hasSubscription && (
             <li>
               <a href="/premium-articles">Premium Articles</a>
             </li>
-          )}
+          )} */}
         </ul>
       </div>
 
@@ -105,7 +123,8 @@ const Navbar = ({ user, isAdmin, hasSubscription }) => {
             {/* Logout Button */}
             <button
               className="btn btn-secondary"
-              onClick={() => alert("Logged Out!")}
+              onClick={() => handleLogout}
+              // onClick={handleLogout}
             >
               Logout
             </button>
