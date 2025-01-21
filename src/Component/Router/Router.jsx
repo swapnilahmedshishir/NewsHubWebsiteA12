@@ -1,4 +1,4 @@
-import App from "../../App";
+import App from "../Layout/App";
 import AddArticlePage from "../../Pages/AddArticlePage/AddArticlePage";
 import AllArticlesPage from "../../Pages/AllArticlesPage/AllArticlesPage";
 import ArticleDetailsPage from "../../Pages/ArticleDetailsPage/ArticleDetailsPage";
@@ -11,6 +11,7 @@ import SubscriptionPage from "../../Pages/SubscriptionPage/SubscriptionPage";
 import Login from "../Auth/Login";
 import Registration from "../Auth/Registration";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import Dashboard from "../Layout/Dashboard";
 
 const RoutersItems = [
   {
@@ -82,6 +83,20 @@ const RoutersItems = [
         path: "/register",
         element: <Registration />,
       },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <Dashboard />
+      </PrivateRoute>
+    ),
+    children: [
+      // {
+      //   path: "/",
+      //   element: <HomePage />,
+      // },
     ],
   },
 ];

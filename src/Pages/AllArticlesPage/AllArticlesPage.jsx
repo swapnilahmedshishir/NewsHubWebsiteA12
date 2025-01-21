@@ -1,34 +1,42 @@
-import React, { useContext, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../Context/ContextProvider";
+import useArtical from "../../Hook/useArtical";
+import axios from "axios";
 
 const AllArticlesPage = () => {
   const { apiUrl } = useContext(AppContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPublisher, setSelectedPublisher] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
+  const [publishers, setPublishers] = useState([]);
+  const [tags, setTags] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch articles using TanStack Query
-  const {
-    data: articles = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["articles", { searchTerm, selectedPublisher, selectedTags }],
-    queryFn: async () => {
-      const response = await axios.get(`${apiUrl}/api/articles`, {
-        params: {
-          search: searchTerm,
-          publisher: selectedPublisher,
-          tags: selectedTags.join(","),
-        },
-      });
-      return response.data;
-    },
+  // Fetch publishers and tags dynamically
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const [publisherResponse, tagResponse] = await Promise.all([
+          axios.get(`${apiUrl}/api/publishers`),
+          axios.get(`${apiUrl}/api/tags`),
+        ]);
+        setPublishers(publisherResponse.data);
+        setTags(tagResponse.data);
+      } catch (error) {
+        console.error("Error fetching filters:", error);
+      }
+    };
+    fetchFilters();
+  }, [apiUrl]);
+
+  // Fetch articles with the custom hook
+  const [filteredArticles, isLoading, error] = useArtical({
+    searchTerm,
+    selectedPublisher,
+    selectedTags,
   });
+  console.log(filteredArticles);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading articles: {error.message}</div>;
@@ -39,25 +47,30 @@ const AllArticlesPage = () => {
 
       {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-6">
+        {/* Search Input */}
         <input
           type="text"
           placeholder="Search by title"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full md:w-1/3 p-2 border border-gray-300 rounded"
+          className="w-full h-10 md:w-1/3 p-2 border border-gray-300 rounded"
         />
 
+        {/* Publisher Dropdown */}
         <select
           value={selectedPublisher}
           onChange={(e) => setSelectedPublisher(e.target.value)}
-          className="w-full md:w-1/4 p-2 border border-gray-300 rounded"
+          className="w-full md:w-1/4 h-10 p-2 border border-gray-300 rounded"
         >
           <option value="">All Publishers</option>
-          {/* Replace with dynamic publishers */}
-          <option value="Publisher 1">Publisher 1</option>
-          <option value="Publisher 2">Publisher 2</option>
+          {publishers.map((publisher) => (
+            <option key={publisher.id} value={publisher.name}>
+              {publisher.name}
+            </option>
+          ))}
         </select>
 
+        {/* Tags Dropdown */}
         <select
           multiple
           value={selectedTags}
@@ -66,20 +79,21 @@ const AllArticlesPage = () => {
               Array.from(e.target.selectedOptions, (option) => option.value)
             )
           }
-          className="w-full md:w-1/3 p-2 border border-gray-300 rounded"
+          className="w-full md:w-1/3 h-10 p-2 border border-gray-300 rounded"
         >
-          {/* Replace with dynamic tags */}
-          <option value="Tech">Tech</option>
-          <option value="Health">Health</option>
-          <option value="Business">Business</option>
+          {tags.map((tag) => (
+            <option key={tag.id} value={tag.name}>
+              {tag.name}
+            </option>
+          ))}
         </select>
       </div>
 
       {/* Articles List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {articles.map((article) => (
+        {filteredArticles.map((article) => (
           <div
-            key={article.id}
+            key={article._id}
             className={`p-4 border rounded shadow-sm ${
               article.isPremium ? "bg-yellow-100" : "bg-white"
             }`}
