@@ -1,7 +1,7 @@
 import React from "react";
-import PieChart from "../components/PieChart";
-import BarChart from "../components/BarChart";
-import LineChart from "../components/LineChart";
+import PieChart from "../Component/PieChart";
+import BarChart from "../Component/BarChart";
+import LineChart from "../Component/LineChart";
 
 const DashboardPage = () => {
   return (

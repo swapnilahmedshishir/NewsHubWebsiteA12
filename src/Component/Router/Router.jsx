@@ -12,6 +12,10 @@ import Login from "../Auth/Login";
 import Registration from "../Auth/Registration";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import Dashboard from "../Layout/Dashboard";
+import DashboardPage from "../../Dashboard/Pages/DashboardPage";
+import AllUsersPage from "../../Dashboard/Pages/AllUsersPage";
+import AddPublisherPage from "../../Dashboard/Pages/AddPublisherPage";
+// import AllArticlesPage from "../../Dashboard/Pages/AllArticlesPage";
 
 const RoutersItems = [
   {
@@ -86,17 +90,29 @@ const RoutersItems = [
     ],
   },
   {
-    path: "/dashboard",
+    path: "dashboard",
     element: (
       <PrivateRoute>
         <Dashboard />
       </PrivateRoute>
     ),
     children: [
-      // {
-      //   path: "/",
-      //   element: <HomePage />,
-      // },
+      {
+        path: "maindashboard",
+        element: <DashboardPage />,
+      },
+      {
+        path: "all-users",
+        element: <AllUsersPage />,
+      },
+      {
+        path: "add-publisher",
+        element: <AddPublisherPage />,
+      },
+      {
+        path: "all-articles",
+        element: <AllArticlesPage />,
+      },
     ],
   },
 ];

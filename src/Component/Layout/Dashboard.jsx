@@ -1,42 +1,48 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import {
+  FaTachometerAlt,
+  FaUsers,
+  FaNewspaper,
+  FaUserPlus,
+} from "react-icons/fa"; // React Icons
 
 const Dashboard = () => {
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-orange-500 p-4">
+      <aside className="w-full md:w-64 bg-gradient-to-r from-indigo-600 to-indigo-800 p-4">
         <ul className="menu space-y-4 text-white">
           <li>
             <NavLink
-              to="/admin/dashboard"
-              className="block p-2 rounded-md hover:bg-orange-600"
+              to="maindashboard"
+              className="flex items-center p-2 rounded-md hover:bg-indigo-700"
             >
-              Dashboard
+              <FaTachometerAlt className="mr-2" /> Dashboard
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/admin/users"
-              className="block p-2 rounded-md hover:bg-orange-600"
+              to="all-users"
+              className="flex items-center p-2 rounded-md hover:bg-indigo-700"
             >
-              All Users
+              <FaUsers className="mr-2" /> All Users
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/admin/articles"
-              className="block p-2 rounded-md hover:bg-orange-600"
+              to="all-articles"
+              className="flex items-center p-2 rounded-md hover:bg-indigo-700"
             >
-              All Articles
+              <FaNewspaper className="mr-2" /> All Articles
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/admin/add-publisher"
-              className="block p-2 rounded-md hover:bg-orange-600"
+              to="add-publisher"
+              className="flex items-center p-2 rounded-md hover:bg-indigo-700"
             >
-              Add Publisher
+              <FaUserPlus className="mr-2" /> Add Publisher
             </NavLink>
           </li>
         </ul>
