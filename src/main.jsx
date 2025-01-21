@@ -4,6 +4,13 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RoutersItems from "./Component/Router/Router.jsx";
 import ContextProvider from "./Context/ContextProvider.jsx";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter(RoutersItems, {
   future: {
@@ -15,7 +22,9 @@ const router = createBrowserRouter(RoutersItems, {
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ContextProvider>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </ContextProvider>
   </StrictMode>
 );

@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import { updateProfile } from "firebase/auth";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 import { AppContext } from "../../Context/ContextProvider";
@@ -39,7 +38,7 @@ const Registration = () => {
   };
 
   // Registration function
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     const passwordValidationMessage = validatePassword(password);
 
@@ -48,32 +47,44 @@ const Registration = () => {
       toast.error(passwordValidationMessage);
       return;
     }
-    if (email && password) {
-      RegisterUser(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
 
-          updateProfile(user, {
-            displayName: name,
-            photoURL: photoUrl,
-          });
-          // Signed up info
-          const userData = {
-            uid: user.uid,
-            email: user.email,
-            displayName: name,
-            photoURL: photoUrl,
-          };
-          setUser(userData);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-        });
-      toast.success("Registration successful!");
-      navigate("/");
-    } else {
-      toast.error("Registration failed. Please check your input.");
+    try {
+      // Firebase registration
+      const userCredential = await RegisterUser(email, password);
+      const user = userCredential.user;
+
+      // Firebase profile update
+      await updateProfile(user, {
+        displayName: name,
+        photoURL: photoUrl,
+      });
+
+      // Backend API sync
+      const userData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: name,
+        photoURL: photoUrl,
+      };
+
+      const response = await fetch(`${apiUrl}/api/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setUser(result.newUser);
+        toast.success("Registration successful!");
+        navigate("/");
+      } else {
+        const error = await response.json();
+        toast.error(error.message || "Failed to save user in database.");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error("Registration failed. Please try again.");
     }
   };
 

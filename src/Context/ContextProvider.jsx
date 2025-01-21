@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   signInWithPopup,
+  updateProfile,
 } from "firebase/auth";
 import { auth, googleProvider } from "../Component/Auth/FirebaseAuth";
 
@@ -20,15 +21,6 @@ const ContextProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("user")) || null
   );
 
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-
-  // Handle Theme Toggle
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-  };
-
   // singup or Register user
   const RegisterUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -41,6 +33,44 @@ const ContextProvider = ({ children }) => {
   // Google login
   const loginWithGoogle = () => {
     return signInWithPopup(auth, googleProvider);
+  };
+  // updateUser
+  const updateUser = (updatedInfo) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      ...updatedInfo,
+    }));
+  };
+
+  const updateProfileData = async (updatedInfo) => {
+    if (auth.currentUser) {
+      try {
+        // Update Firebase user profile
+        await updateProfile(auth.currentUser, {
+          displayName: updatedInfo.name,
+          photoURL: updatedInfo.photoURL,
+        });
+
+        // Sync with backend API
+        const response = await fetch(`${apiUrl}/api/update-profile`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedInfo),
+        });
+
+        if (response.ok) {
+          const updatedUser = await response.json();
+          setUser(updatedUser);
+          toast.success("Profile updated successfully!");
+        } else {
+          const error = await response.json();
+          toast.error(error.message || "Failed to update profile.");
+        }
+      } catch (error) {
+        console.error("Profile update error:", error);
+        toast.error("Failed to update profile.");
+      }
+    }
   };
 
   // Logout User
@@ -71,13 +101,13 @@ const ContextProvider = ({ children }) => {
   const contextApiValue = {
     apiUrl,
     user,
-    theme,
-    toggleTheme,
     setUser,
     RegisterUser,
     loginUser,
     loginWithGoogle,
     logoutUser,
+    updateUser,
+    updateProfileData,
   };
 
   return (
