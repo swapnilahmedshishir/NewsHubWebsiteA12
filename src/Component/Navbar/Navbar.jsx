@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
 import { AppContext } from "../../Context/ContextProvider";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
-  // { user, isAdmin, hasSubscription }
-
   const { user, logoutUser, theme, toggleTheme } = useContext(AppContext);
-
-  console.log(user);
 
   // Log out the user
   const handleLogout = () => {
@@ -14,7 +12,7 @@ const Navbar = () => {
       .then(() => {
         toast.success("Logged out successfully!");
       })
-      .catch((error) => {
+      .catch(() => {
         toast.error("Failed to log out. Please try again.");
       });
   };
@@ -46,65 +44,65 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content z-10 mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
           >
             <li>
-              <a href="/home">Home</a>
+              <NavLink to="/" activeClassName="active">
+                Home
+              </NavLink>
             </li>
             <li>
-              <a href="/add-articles">Add Articles</a>
+              <NavLink to="/add-articles" activeClassName="active">
+                Add Articles
+              </NavLink>
             </li>
             <li>
-              <a href="/all-articles">All Articles</a>
+              <NavLink to="/all-articles" activeClassName="active">
+                All Articles
+              </NavLink>
             </li>
             <li>
-              <a href="/subscription">Subscription</a>
+              <NavLink to="/subscription" activeClassName="active">
+                Subscription
+              </NavLink>
             </li>
-            {/* {isAdmin && (
-              <li>
-                <a href="/dashboard">Dashboard</a>
-              </li>
-            )} */}
             <li>
-              <a href="/my-articles">My Articles</a>
+              <NavLink to="/my-articles" activeClassName="active">
+                My Articles
+              </NavLink>
             </li>
-            {/* {hasSubscription && (
-              <li>
-                <a href="/premium-articles">Premium Articles</a>
-              </li>
-            )} */}
           </ul>
         </div>
-        <a href="/" className="btn btn-ghost text-xl">
+        <NavLink to="/" className="btn btn-ghost text-xl">
           NewsHub
-        </a>
+        </NavLink>
       </div>
 
       {/* Navbar Center for Desktop */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a href="/">Home</a>
+            <NavLink to="/" activeClassName="active">
+              Home
+            </NavLink>
           </li>
           <li>
-            <a href="/add-articles">Add Articles</a>
+            <NavLink to="/add-articles" activeClassName="active">
+              Add Articles
+            </NavLink>
           </li>
           <li>
-            <a href="/all-articles">All Articles</a>
+            <NavLink to="/all-articles" activeClassName="active">
+              All Articles
+            </NavLink>
           </li>
           <li>
-            <a href="/subscription">Subscription</a>
+            <NavLink to="/subscription" activeClassName="active">
+              Subscription
+            </NavLink>
           </li>
-          {/* {isAdmin && (
-            <li>
-              <a href="/dashboard">Dashboard</a>
-            </li>
-          )} */}
           <li>
-            <a href="/my-articles">My Articles</a>
+            <NavLink to="/my-articles" activeClassName="active">
+              My Articles
+            </NavLink>
           </li>
-          {/* {hasSubscription && (
-            <li>
-              <a href="/premium-articles">Premium Articles</a>
-            </li>
-          )} */}
         </ul>
       </div>
 
@@ -113,31 +111,28 @@ const Navbar = () => {
         {user ? (
           <div className="flex items-center gap-4">
             {/* User Profile Photo */}
-            <a href="/profile">
+            <NavLink to="/profile">
               <img
                 src={user.photoURL || "/default-avatar.png"}
                 alt="User Profile"
                 className="h-8 w-8 rounded-full border-2 border-gray-300"
+                referrerPolicy="no-referrer"
               />
-            </a>
+            </NavLink>
             {/* Logout Button */}
-            <button
-              className="btn btn-secondary"
-              onClick={() => handleLogout}
-              // onClick={handleLogout}
-            >
+            <button className="btn btn-secondary" onClick={handleLogout}>
               Logout
             </button>
           </div>
         ) : (
           <div className="flex gap-2">
             {/* Login and Register */}
-            <a href="/login" className="btn btn-primary">
+            <NavLink to="/login" className="btn btn-primary">
               Login
-            </a>
-            <a href="/register" className="btn btn-outline">
+            </NavLink>
+            <NavLink to="/register" className="btn btn-outline">
               Register
-            </a>
+            </NavLink>
           </div>
         )}
       </div>

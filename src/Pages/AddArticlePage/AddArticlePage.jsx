@@ -12,6 +12,8 @@ const AddArticlePage = () => {
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
 
+  const coludName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+
   const tagOptions = [
     { value: "tech", label: "Tech" },
     { value: "health", label: "Health" },
@@ -20,7 +22,7 @@ const AddArticlePage = () => {
   ];
 
   useEffect(() => {
-    // Fetch publishers (Admin added)
+    // Fetch publishers
     const fetchPublishers = async () => {
       try {
         const response = await axios.get("/api/publishers");
@@ -44,13 +46,13 @@ const AddArticlePage = () => {
 
     try {
       const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/your_cloudinary_name/image/upload",
+        `https://api.cloudinary.com/v1_1/${coludName}/image/upload`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      return response.data.secure_url; // Return the uploaded image URL
+      return response.data.secure_url;
     } catch (error) {
       console.error("Error uploading image:", error);
       return null;

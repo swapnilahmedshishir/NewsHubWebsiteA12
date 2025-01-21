@@ -54,3 +54,8 @@
     color: var(--bg-color);
     transition: background 0.4s ease, color 0.4s ease;
 }
+
+.active {
+    font-weight: bold;
+    border-bottom: 2px solid #3b82f6;
+}
