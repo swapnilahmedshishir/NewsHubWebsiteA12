@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RoutersItems from "./Component/Router/Router.jsx";
+import ContextProvider from "./Context/ContextProvider.jsx";
 
 const router = createBrowserRouter(RoutersItems, {
   future: {
@@ -13,6 +14,8 @@ const router = createBrowserRouter(RoutersItems, {
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ContextProvider>
+      <RouterProvider router={router} />
+    </ContextProvider>
   </StrictMode>
 );
