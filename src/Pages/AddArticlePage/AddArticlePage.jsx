@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Select from "react-select";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { AppContext } from "../../Context/ContextProvider";
 
 const AddArticlePage = () => {
+  const { apiUrl } = useContext(AppContext);
   const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
   const [publishers, setPublishers] = useState([]);
@@ -12,7 +15,7 @@ const AddArticlePage = () => {
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
 
-  const coludName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 
   const tagOptions = [
     { value: "tech", label: "Tech" },
@@ -23,38 +26,54 @@ const AddArticlePage = () => {
 
   useEffect(() => {
     // Fetch publishers
-    const fetchPublishers = async () => {
-      try {
-        const response = await axios.get("/api/publishers");
-        const options = response.data.map((publisher) => ({
-          value: publisher.id,
-          label: publisher.name,
-        }));
-        setPublishers(options);
-      } catch (error) {
-        console.error("Error fetching publishers:", error);
-      }
-    };
-
-    fetchPublishers();
+    // const fetchPublishers = async () => {
+    //   try {
+    //     const response = await axios.get("/api/publishers");
+    //     const options = response.data.map((publisher) => ({
+    //       value: publisher.id,
+    //       label: publisher.name,
+    //     }));
+    //     setPublishers(options);
+    //   } catch (error) {
+    //     console.error("Error fetching publishers:", error);
+    //   }
+    // };
+    // fetchPublishers();
+    // Example data for publishers
+    setPublishers([
+      { value: 1, label: "Publisher 1" },
+      { value: 2, label: "Publisher 2" },
+      { value: 3, label: "Publisher 3" },
+    ]);
   }, []);
 
   const handleImageUpload = async () => {
-    if (!image) return null;
+    if (!image) {
+      toast.error("Please select an image to upload!");
+      return null;
+    }
+
     const formData = new FormData();
-    formData.append("image", image);
+    formData.append("file", image);
+    formData.append("upload_preset", "my_upload_preset");
 
     try {
       const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${coludName}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
         formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
-      return response.data.secure_url;
+
+      if (response.data.secure_url) {
+        toast.success("Image uploaded successfully!");
+        return response.data.secure_url;
+      } else {
+        toast.error("Image upload failed!");
+        return null;
+      }
     } catch (error) {
       console.error("Error uploading image:", error);
+      toast.error("An error occurred during the image upload.");
       return null;
     }
   };
@@ -62,8 +81,13 @@ const AddArticlePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    toast.info("Uploading image...");
     const uploadedImageUrl = await handleImageUpload();
-    if (!uploadedImageUrl) return alert("Image upload failed!");
+
+    if (!uploadedImageUrl) {
+      toast.error("Cannot submit the article without a valid image.");
+      return;
+    }
 
     const articleData = {
       title,
@@ -72,14 +96,15 @@ const AddArticlePage = () => {
       tags: tags.map((tag) => tag.value),
       description,
     };
+    console.log(articleData);
 
     try {
-      await axios.post("/api/articles", articleData);
-      alert("Article submitted successfully! Awaiting admin approval.");
-      navigate("/dashboard"); // Redirect to the dashboard
+      await axios.post(`${apiUrl}/api/articles`, articleData);
+      toast.success("Article submitted successfully! Awaiting admin approval.");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error submitting article:", error);
-      alert("Failed to submit the article.");
+      toast.error("Failed to submit the article. Please try again.");
     }
   };
 

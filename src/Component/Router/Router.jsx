@@ -1,5 +1,6 @@
 import App from "../../App";
 import AddArticlePage from "../../Pages/AddArticlePage/AddArticlePage";
+import AllArticlesPage from "../../Pages/AllArticlesPage/AllArticlesPage";
 import Erro from "../../Pages/ErroPage/ErroPage";
 import { HomePage } from "../../Pages/Home/HomePage";
 import Login from "../Auth/Login";
@@ -24,7 +25,10 @@ const RoutersItems = [
           </PrivateRoute>
         ),
       },
-
+      {
+        path: "/all-articles",
+        element: <AllArticlesPage />,
+      },
       {
         path: "/login",
         element: <Login />,
