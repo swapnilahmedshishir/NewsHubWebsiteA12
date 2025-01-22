@@ -4,9 +4,11 @@ import { toast } from "react-toastify";
 import { updateProfile } from "firebase/auth";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 import { AppContext } from "../../Context/ContextProvider";
+import { useAxiospublic } from "../../Hook/useAxiospublic";
 
 const Registration = () => {
   const { RegisterUser, setUser, loginWithGoogle } = useContext(AppContext);
+  const axiosPublic = useAxiospublic();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
@@ -67,33 +69,53 @@ const Registration = () => {
         photoURL: photoUrl,
       };
 
-      const response = await fetch(`${apiUrl}/api/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setUser(result.newUser);
-        toast.success("Registration successful!");
+      // Use Axios to make the POST request
+      const response = await axiosPublic.post("/api/register", userData);
+      if (response.status === 201 && response.data.newUser) {
+        // New user successfully registered
+        setUser(response.data.newUser);
+        toast.success("Registration successfully!");
         navigate("/");
-      } else {
-        const error = await response.json();
-        toast.error(error.message || "Failed to save user in database.");
+      } else if (response.data.existingUser) {
+        // User already exists
+        setUser(response.data.existingUser);
+        toast.info("Welcome back! You are already registered.");
       }
     } catch (error) {
       console.error("Registration error:", error);
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("Email already in use. Please login.");
+      }
       toast.error("Registration failed. Please try again.");
     }
   };
 
   const handleGoogleRegister = async () => {
     try {
-      await loginWithGoogle();
-      toast.success("Google account registered successfully!");
-      navigate("/");
+      // Log in with Google
+      const userCredential = await loginWithGoogle();
+      const user = userCredential.user;
+      // Extract user data
+      const userData = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+      };
+      // Send the user data to the server to check or register
+      const response = await axiosPublic.post("/api/register", userData);
+      if (response.status === 201 && response.data.newUser) {
+        // New user successfully registered
+        setUser(response.data.newUser);
+        toast.success("Google account registered successfully!");
+        navigate("/");
+      } else if (response.data.existingUser) {
+        // User already exists
+        setUser(response.data.existingUser);
+        toast.info("Welcome back! You are already registered.");
+      }
     } catch (error) {
+      console.error("Google registration error:", error);
       toast.error("Google registration failed!");
     }
   };

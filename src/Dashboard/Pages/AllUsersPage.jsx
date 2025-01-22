@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useAxiosSequre from "../../Hook/useAxiosSequre";
+import { useQuery } from "@tanstack/react-query";
 
 const AllUsersPage = () => {
-  // Dummy data for demonstration
-  const users = [
-    { id: 1, name: "John Doe", email: "john@example.com", isAdmin: true },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", isAdmin: false },
-  ];
+  const axiosSequre = useAxiosSequre();
+  // use a tarnsktack query then data fetch
+  const {
+    data: users = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const response = await axiosSequre.get("/api/users");
+      return response.data;
+    },
+  });
+
+  console.log(users);
 
   const handleMakeAdmin = (id) => {
     console.log(`User with ID ${id} is now an admin.`);
@@ -25,7 +37,7 @@ const AllUsersPage = () => {
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
-              <td className="border px-4 py-2">{user.name}</td>
+              <td className="border px-4 py-2">{user.displayName}</td>
               <td className="border px-4 py-2">{user.email}</td>
               <td className="border px-4 py-2">
                 {user.isAdmin ? (
@@ -33,7 +45,7 @@ const AllUsersPage = () => {
                 ) : (
                   <button
                     className="bg-blue-500 text-white px-2 py-1 rounded"
-                    onClick={() => handleMakeAdmin(user.id)}
+                    onClick={() => handleMakeAdmin(user._id)}
                   >
                     Make Admin
                   </button>
