@@ -4,7 +4,7 @@ import { AppContext } from "../../Context/ContextProvider";
 import { toast } from "react-toastify";
 
 const Navbar = () => {
-  const { user, logoutUser, theme, toggleTheme } = useContext(AppContext);
+  const { user, logoutUser } = useContext(AppContext);
 
   // Log out the user
   const handleLogout = () => {

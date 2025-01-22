@@ -8,10 +8,13 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth, googleProvider } from "../Component/Auth/FirebaseAuth";
+import { useAxiospublic } from "../Hook/useAxiospublic";
 
 export const AppContext = createContext();
 
 const ContextProvider = ({ children }) => {
+  // axios public import
+  const axiosPublic = useAxiospublic();
   // api url
   const apiUrl = "http://localhost:5001";
   // const apiUrl = "https://crowdcube-application-server.vercel.app";
@@ -87,16 +90,22 @@ const ContextProvider = ({ children }) => {
           email: currentUser.email,
           photoURL: currentUser.photoURL,
         };
+        axiosPublic.post("/api/jwt", loggedInUser).then((res) => {
+          if (res.data.success) {
+            localStorage.setItem("access-token", res.data.token);
+          }
+        });
         setUser(loggedInUser);
         localStorage.setItem("user", JSON.stringify(loggedInUser));
       } else {
         setUser(null);
         localStorage.removeItem("user");
+        localStorage.removeItem("access-token");
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [axiosPublic]);
 
   const contextApiValue = {
     apiUrl,
