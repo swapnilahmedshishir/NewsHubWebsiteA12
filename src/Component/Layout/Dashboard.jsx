@@ -11,7 +11,6 @@ import useAdmin from "../../Hook/useAdmin";
 
 const Dashboard = () => {
   const [admin] = useAdmin();
-  console.log(admin);
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       {/* Sidebar */}
