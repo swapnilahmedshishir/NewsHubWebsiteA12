@@ -6,7 +6,6 @@ import useAxiosSequre from "./useAxiosSequre";
 const useAdmin = () => {
   const { user, isLoading } = useContext(AppContext);
   const axiosSecure = useAxiosSequre();
-  console.log(isLoading);
 
   // Use React Query to fetch admin status
   const { data: isAdmin, isLoading: isAdminLoading } = useQuery({

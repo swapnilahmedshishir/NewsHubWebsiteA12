@@ -5,6 +5,7 @@ import {
   FaUsers,
   FaNewspaper,
   FaUserPlus,
+  FaHome,
 } from "react-icons/fa"; // React Icons
 import useAdmin from "../../Hook/useAdmin";
 
@@ -46,6 +47,18 @@ const Dashboard = () => {
               className="flex items-center p-2 rounded-md hover:bg-indigo-700"
             >
               <FaUserPlus className="mr-2" /> Add Publisher
+            </NavLink>
+          </li>
+        </ul>
+        <div className="divider divider-neutral"></div>
+        <ul className="menu space-y-4 text-white">
+          <li>
+            <NavLink
+              to="/"
+              className="flex items-center p-2 rounded-md hover:bg-indigo-700"
+            >
+              <FaHome className="mr-2" />
+              Website
             </NavLink>
           </li>
         </ul>

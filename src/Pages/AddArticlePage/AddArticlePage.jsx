@@ -4,9 +4,13 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AppContext } from "../../Context/ContextProvider";
+import useGetPublisherData from "../../Hook/useGetPublisherData";
+import { useAxiospublic } from "../../Hook/useAxiospublic";
 
 const AddArticlePage = () => {
-  const { apiUrl } = useContext(AppContext);
+  const { apiUrl, user } = useContext(AppContext);
+  const axiosPublic = useAxiospublic();
+  const [data, isLoading, refetch] = useGetPublisherData();
   const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
   const [publishers, setPublishers] = useState([]);
@@ -22,30 +26,20 @@ const AddArticlePage = () => {
     { value: "health", label: "Health" },
     { value: "business", label: "Business" },
     { value: "education", label: "Education" },
+    { value: "politics", label: "Politics" },
+    { value: "science", label: "Science" },
+    { value: "news", label: "News" },
   ];
 
   useEffect(() => {
-    // Fetch publishers
-    // const fetchPublishers = async () => {
-    //   try {
-    //     const response = await axios.get("/api/publishers");
-    //     const options = response.data.map((publisher) => ({
-    //       value: publisher.id,
-    //       label: publisher.name,
-    //     }));
-    //     setPublishers(options);
-    //   } catch (error) {
-    //     console.error("Error fetching publishers:", error);
-    //   }
-    // };
-    // fetchPublishers();
-    // Example data for publishers
-    setPublishers([
-      { value: 1, label: "Publisher 1" },
-      { value: 2, label: "Publisher 2" },
-      { value: 3, label: "Publisher 3" },
-    ]);
-  }, []);
+    if (data && data.length > 0) {
+      const transformedPublishers = data.map((publisher) => ({
+        value: publisher._id,
+        label: publisher.name,
+      }));
+      setPublishers(transformedPublishers);
+    }
+  }, [data]);
 
   const handleImageUpload = async () => {
     if (!image) {
@@ -78,6 +72,8 @@ const AddArticlePage = () => {
     }
   };
 
+  console.log(user);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -92,16 +88,18 @@ const AddArticlePage = () => {
     const articleData = {
       title,
       image: uploadedImageUrl,
-      publisher: selectedPublisher?.value,
+      authorName: user?.displayName,
+      authorEmail: user?.email,
+      authorPhoto: user?.photoURL,
+      publisher: selectedPublisher?.label,
       tags: tags.map((tag) => tag.value),
       description,
     };
-    console.log(articleData);
 
     try {
-      await axios.post(`${apiUrl}/api/articles`, articleData);
+      await axiosPublic.post(`/api/articles`, articleData);
       toast.success("Article submitted successfully! Awaiting admin approval.");
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       console.error("Error submitting article:", error);
       toast.error("Failed to submit the article. Please try again.");
@@ -135,6 +133,7 @@ const AddArticlePage = () => {
           placeholder="Select Publisher"
           className="w-full"
           isSearchable
+          isLoading={isLoading}
         />
 
         <Select

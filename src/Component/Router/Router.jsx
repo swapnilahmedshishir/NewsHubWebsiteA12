@@ -15,7 +15,7 @@ import Dashboard from "../Layout/Dashboard";
 import DashboardPage from "../../Dashboard/Pages/DashboardPage";
 import AllUsersPage from "../../Dashboard/Pages/AllUsersPage";
 import AddPublisherPage from "../../Dashboard/Pages/AddPublisherPage";
-// import AllArticlesPage from "../../Dashboard/Pages/AllArticlesPage";
+import AllDasbordArticlesPage from "../../Dashboard/Pages/AllDasbordArticlesPage";
 
 const RoutersItems = [
   {
@@ -111,7 +111,7 @@ const RoutersItems = [
       },
       {
         path: "all-articles",
-        element: <AllArticlesPage />,
+        element: <AllDasbordArticlesPage />,
       },
     ],
   },

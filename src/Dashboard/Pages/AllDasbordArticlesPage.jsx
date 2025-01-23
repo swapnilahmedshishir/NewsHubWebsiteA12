@@ -1,70 +1,102 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
+import useAxiosSequre from "../../Hook/useAxiosSequre";
 
-const AllArticlesPage = () => {
-  // Dummy article data
-  const [articles, setArticles] = useState([
-    {
-      id: 1,
-      title: "Article 1",
-      authorName: "John Doe",
-      authorEmail: "john@example.com",
-      authorPhoto: "https://via.placeholder.com/40",
-      postedDate: "2024-01-01",
-      status: "Pending",
-      publisher: "Publisher A",
-    },
-    {
-      id: 2,
-      title: "Article 2",
-      authorName: "Jane Smith",
-      authorEmail: "jane@example.com",
-      authorPhoto: "https://via.placeholder.com/40",
-      postedDate: "2024-01-10",
-      status: "Pending",
-      publisher: "Publisher B",
-    },
-  ]);
-
+const AllDasbordArticlesPage = () => {
+  const [articles, setArticles] = useState([]);
+  const axiosSecure = useAxiosSequre();
   const [declineModal, setDeclineModal] = useState({
     show: false,
     articleId: null,
   });
   const [declineReason, setDeclineReason] = useState("");
 
-  // Handlers
-  const handleApprove = (id) => {
-    setArticles(
-      articles.map((article) =>
-        article.id === id ? { ...article, status: "Approved" } : article
-      )
-    );
+  // Fetch articles data
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await axiosSecure.get("/api/articles");
+        setArticles(response.data);
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+        toast.error("Failed to load articles!");
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  console.log(articles);
+
+  // Approve an article
+  const handleApprove = async (id) => {
+    try {
+      await axios.patch(`/api/articles/${id}/approve`);
+      setArticles(
+        articles.map((article) =>
+          article.id === id ? { ...article, status: "Approved" } : article
+        )
+      );
+      toast.success("Article approved successfully!");
+    } catch (error) {
+      console.error("Error approving article:", error);
+      toast.error("Failed to approve the article!");
+    }
   };
 
-  const handleDecline = () => {
-    console.log(
-      `Declined Article ID: ${declineModal.articleId}, Reason: ${declineReason}`
-    );
-    setArticles(
-      articles.map((article) =>
-        article.id === declineModal.articleId
-          ? { ...article, status: "Declined" }
-          : article
-      )
-    );
-    setDeclineModal({ show: false, articleId: null });
-    setDeclineReason("");
+  // Decline an article
+  const handleDecline = async () => {
+    try {
+      await axios.patch(`/api/articles/${declineModal.articleId}/decline`, {
+        reason: declineReason,
+      });
+      setArticles(
+        articles.map((article) =>
+          article.id === declineModal.articleId
+            ? { ...article, status: "Declined", declineReason }
+            : article
+        )
+      );
+      setDeclineModal({ show: false, articleId: null });
+      setDeclineReason("");
+      toast.success("Article declined successfully!");
+    } catch (error) {
+      console.error("Error declining article:", error);
+      toast.error("Failed to decline the article!");
+    }
   };
 
-  const handleDelete = (id) => {
-    setArticles(articles.filter((article) => article.id !== id));
+  // Delete an article
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/articles/${id}`);
+      setArticles(articles.filter((article) => article.id !== id));
+      toast.success("Article deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting article:", error);
+      toast.error("Failed to delete the article!");
+    }
   };
 
-  const handleMakePremium = (id) => {
-    console.log(`Article ID: ${id} is now premium.`);
+  // Make an article premium
+  const handleMakePremium = async (id) => {
+    try {
+      await axios.patch(`/api/articles/${id}/make-premium`);
+      setArticles(
+        articles.map((article) =>
+          article.id === id ? { ...article, isPremium: true } : article
+        )
+      );
+      toast.success("Article is now premium!");
+    } catch (error) {
+      console.error("Error making article premium:", error);
+      toast.error("Failed to make the article premium!");
+    }
   };
 
   return (
-    <div>
+    <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">All Articles</h1>
       <table className="table-auto w-full bg-white shadow rounded">
         <thead>
@@ -163,4 +195,4 @@ const AllArticlesPage = () => {
   );
 };
 
-export default AllArticlesPage;
+export default AllDasbordArticlesPage;

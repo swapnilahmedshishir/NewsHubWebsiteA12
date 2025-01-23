@@ -7,7 +7,6 @@ import useAdmin from "../../Hook/useAdmin";
 const Navbar = () => {
   const { user, logoutUser } = useContext(AppContext);
   const [isAdmin, isAdminLoading] = useAdmin();
-  console.log(isAdmin);
 
   const handleLogout = () => {
     logoutUser()
@@ -64,16 +63,21 @@ const Navbar = () => {
                 Subscription
               </NavLink>
             </li>
-            {/* {isAdmin === "true" && (
+            {isAdmin === "true" && (
               <li>
                 <NavLink to="/dashboard" activeClassName="active">
                   Dashboard
                 </NavLink>
               </li>
-            )} */}
+            )}
             <li>
               <NavLink to="/my-articles" activeClassName="active">
                 My Articles
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/premium-articles" activeClassName="active">
+                Premium Articles
               </NavLink>
             </li>
           </ul>
@@ -106,16 +110,21 @@ const Navbar = () => {
               Subscription
             </NavLink>
           </li>
-          {/* {!isAdminLoading && isAdmin && (
+          {!isAdminLoading && isAdmin && (
             <li>
               <NavLink to="/dashboard" activeClassName="active">
                 Dashboard
               </NavLink>
             </li>
-          )} */}
+          )}
           <li>
             <NavLink to="/my-articles" activeClassName="active">
               My Articles
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/premium-articles" activeClassName="active">
+              Premium Articles
             </NavLink>
           </li>
         </ul>
