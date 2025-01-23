@@ -25,17 +25,21 @@ const ContextProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("user")) || null
   );
 
+  const [isLoading, setIsLoading] = useState(true);
+
   // singup or Register user
   const RegisterUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
   // sinIn or login user
   const loginUser = (email, password) => {
+    setIsLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
   // Google login
   const loginWithGoogle = () => {
+    setIsLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
   // updateUser
@@ -51,6 +55,7 @@ const ContextProvider = ({ children }) => {
       try {
         await updateProfile(auth.currentUser, {
           displayName: updatedInfo.name,
+          email: updatedInfo.email,
           photoURL: updatedInfo.photoURL,
         });
 
@@ -59,12 +64,12 @@ const ContextProvider = ({ children }) => {
           "/api/update-profile",
           updatedInfo
         );
-
-        if (response.data.status === 200) {
-          const updatedUser = await response.json();
+        if (response.status === 200) {
+          const updatedUser = await response.data;
+          console.log(updatedUser);
           setUser((prev) => ({
             ...prev,
-            displayName: updatedUser.name,
+            displayName: updatedUser.displayName,
             photoURL: updatedUser.photoURL,
             email: updatedUser.email,
           }));
@@ -75,7 +80,6 @@ const ContextProvider = ({ children }) => {
           toast.error(error.message || "Failed to update profile.");
         }
       } catch (error) {
-        console.error("Profile update error:", error);
         toast.error("Failed to update profile.");
       }
     }
@@ -85,6 +89,7 @@ const ContextProvider = ({ children }) => {
   const logoutUser = () => {
     return signOut(auth);
   };
+
   // any change user Listen for authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -98,14 +103,17 @@ const ContextProvider = ({ children }) => {
         axiosPublic.post("/api/jwt", loggedInUser).then((res) => {
           if (res.data.success) {
             localStorage.setItem("access-token", res.data.token);
+            setIsLoading(false);
           }
         });
+
         setUser(loggedInUser);
         localStorage.setItem("user", JSON.stringify(loggedInUser));
       } else {
         setUser(null);
         localStorage.removeItem("user");
         localStorage.removeItem("access-token");
+        setIsLoading(false);
       }
     });
 
@@ -122,6 +130,7 @@ const ContextProvider = ({ children }) => {
     logoutUser,
     updateUser,
     updateProfileData,
+    isLoading,
   };
 
   return (

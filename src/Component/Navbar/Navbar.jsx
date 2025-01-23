@@ -2,11 +2,13 @@ import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AppContext } from "../../Context/ContextProvider";
 import { toast } from "react-toastify";
+import useAdmin from "../../Hook/useAdmin";
 
 const Navbar = () => {
   const { user, logoutUser } = useContext(AppContext);
+  const [isAdmin, isAdminLoading] = useAdmin();
+  console.log(isAdmin);
 
-  // Log out the user
   const handleLogout = () => {
     logoutUser()
       .then(() => {
@@ -21,7 +23,6 @@ const Navbar = () => {
     <nav className="navbar bg-base-100 shadow-md">
       {/* Navbar Start */}
       <div className="navbar-start">
-        {/* Dropdown Menu for Mobile */}
         <div className="dropdown lg:hidden">
           <button tabIndex={0} className="btn btn-ghost">
             <svg
@@ -63,6 +64,13 @@ const Navbar = () => {
                 Subscription
               </NavLink>
             </li>
+            {/* {isAdmin === "true" && (
+              <li>
+                <NavLink to="/dashboard" activeClassName="active">
+                  Dashboard
+                </NavLink>
+              </li>
+            )} */}
             <li>
               <NavLink to="/my-articles" activeClassName="active">
                 My Articles
@@ -98,6 +106,13 @@ const Navbar = () => {
               Subscription
             </NavLink>
           </li>
+          {/* {!isAdminLoading && isAdmin && (
+            <li>
+              <NavLink to="/dashboard" activeClassName="active">
+                Dashboard
+              </NavLink>
+            </li>
+          )} */}
           <li>
             <NavLink to="/my-articles" activeClassName="active">
               My Articles
@@ -110,7 +125,6 @@ const Navbar = () => {
       <div className="navbar-end">
         {user ? (
           <div className="flex items-center gap-4">
-            {/* User Profile Photo */}
             <NavLink to="/profile">
               <img
                 src={user.photoURL || "/default-avatar.png"}
@@ -119,14 +133,12 @@ const Navbar = () => {
                 referrerPolicy="no-referrer"
               />
             </NavLink>
-            {/* Logout Button */}
             <button className="btn btn-secondary" onClick={handleLogout}>
               Logout
             </button>
           </div>
         ) : (
           <div className="flex gap-2">
-            {/* Login and Register */}
             <NavLink to="/login" className="btn btn-primary">
               Login
             </NavLink>

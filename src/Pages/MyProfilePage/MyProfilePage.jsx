@@ -1,21 +1,23 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AppContext } from "../../Context/ContextProvider";
-import { toast } from "react-toastify";
 
 const MyProfilePage = () => {
-  const { user, updateUser, updateProfileData } = useContext(AppContext);
-
-  console.log(user);
+  const { user, updateProfileData } = useContext(AppContext);
 
   const [formData, setFormData] = useState({
     name: user?.displayName || "",
     email: user?.email || "",
     photoURL: user?.photoURL || "",
   });
-
   const [isEditing, setIsEditing] = useState(false);
+  useEffect(() => {
+    setFormData({
+      name: user?.displayName || "",
+      email: user?.email || "",
+      photoURL: user?.photoURL || "",
+    });
+  }, [user]);
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -23,7 +25,6 @@ const MyProfilePage = () => {
       [name]: value,
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const updatedInfo = {
@@ -33,14 +34,6 @@ const MyProfilePage = () => {
       email: formData.email,
     };
     const updatedUser = await updateProfileData(updatedInfo);
-    if (updatedUser) {
-      setFormData({
-        name: updatedUser.name,
-        email: updatedUser.email,
-        photoURL: updatedUser.photoURL,
-      });
-      toast.success("Profile updated successfully!");
-    }
     setIsEditing(false);
   };
 
@@ -91,10 +84,10 @@ const MyProfilePage = () => {
 
             <div className="mb-4">
               <label
-                htmlFor="phone"
+                htmlFor="photoURL"
                 className="text-gray-700 dark:text-gray-300 mb-2 flex items-center"
               >
-                photoURL{"   "}
+                photoURL{" "}
                 <img
                   src={formData.photoURL || "/default-avatar.png"}
                   alt="Preview"
@@ -130,7 +123,7 @@ const MyProfilePage = () => {
         ) : (
           <div>
             <div className="mb-4">
-              <p className="text-gray-700 dark:text-gray-300 flex gap-3  items-center">
+              <p className="text-gray-700 dark:text-gray-300 flex gap-3 items-center">
                 <strong>Photo :</strong>{" "}
                 <img
                   src={user.photoURL || "/default-avatar.png"}

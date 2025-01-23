@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../Context/ContextProvider";
 
@@ -11,38 +11,43 @@ const axiosSequre = axios.create({
 });
 
 const useAxiosSequre = () => {
-  const nvaigate = useNavigate();
+  const navigate = useNavigate();
   const { user, logoutUser } = useContext(AppContext);
 
-  axiosSequre.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem("access-token");
-      if (token) {
-        config.headers.authorization = `Bearer ${token}`;
+  useEffect(() => {
+    // Request interceptor
+    const requestInterceptor = axiosSequre.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem("access-token");
+        if (token) {
+          config.headers.authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    // Response interceptor
+    const responseInterceptor = axiosSequre.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const statusCode = error.response?.status;
+        if (statusCode === 401 || statusCode === 403) {
+          await logoutUser();
+          // Navigate inside useEffect
+          navigate("/login", { replace: true });
+        }
+        return Promise.reject(error);
       }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
-  axiosSequre.interceptors.response.use(
-    (response) => {
-      const token = localStorage.getItem("access-token");
-      if (token) {
-        response.headers.authorization = `Bearer ${token}`;
-      }
-      return response;
-    },
-    async (error) => {
-      const statusCode = error.response?.status;
-      if (statusCode === 401 || statusCode === 403) {
-        await logoutUser();
-        nvaigate("/login");
-      }
-      return Promise.reject(error);
-    }
-  );
+    );
+
+    // Cleanup function to eject interceptors
+    return () => {
+      axiosSequre.interceptors.request.eject(requestInterceptor);
+      axiosSequre.interceptors.response.eject(responseInterceptor);
+    };
+  }, [logoutUser, navigate]);
+
   return axiosSequre;
 };
 
