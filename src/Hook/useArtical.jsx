@@ -12,6 +12,7 @@ const useArtical = ({ searchTerm, selectedPublisher, selectedTags }) => {
     data: allArticles = [],
     isLoading: isQueryLoading,
     error: queryError,
+    refetch,
   } = useQuery({
     queryKey: ["articles"],
     queryFn: async () => {

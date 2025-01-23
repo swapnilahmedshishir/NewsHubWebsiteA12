@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 const MyProfilePage = () => {
   const { user, updateUser, updateProfileData } = useContext(AppContext);
 
+  console.log(user);
+
   const [formData, setFormData] = useState({
     name: user?.displayName || "",
     email: user?.email || "",
@@ -22,25 +24,24 @@ const MyProfilePage = () => {
     }));
   };
 
-  // Handle form submission
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //     updateUser(formData);
-  //     setIsEditing(false);
-  //   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const updatedInfo = {
+      uid: user.uid,
       name: formData.name,
       photoURL: formData.photoURL,
       email: formData.email,
     };
-    console.log(updatedInfo);
-
-    await updateProfileData(updatedInfo);
+    const updatedUser = await updateProfileData(updatedInfo);
+    if (updatedUser) {
+      setFormData({
+        name: updatedUser.name,
+        email: updatedUser.email,
+        photoURL: updatedUser.photoURL,
+      });
+      toast.success("Profile updated successfully!");
+    }
     setIsEditing(false);
-    toast.success("Profile updated successfully!");
   };
 
   return (
@@ -91,9 +92,14 @@ const MyProfilePage = () => {
             <div className="mb-4">
               <label
                 htmlFor="phone"
-                className="block text-gray-700 dark:text-gray-300 mb-2"
+                className="text-gray-700 dark:text-gray-300 mb-2 flex items-center"
               >
-                photoURL
+                photoURL{"   "}
+                <img
+                  src={formData.photoURL || "/default-avatar.png"}
+                  alt="Preview"
+                  className="h-8 w-8 rounded-full border-2 border-gray-300 ml-2"
+                />
               </label>
               <input
                 type="text"
@@ -124,6 +130,18 @@ const MyProfilePage = () => {
         ) : (
           <div>
             <div className="mb-4">
+              <p className="text-gray-700 dark:text-gray-300 flex gap-3  items-center">
+                <strong>Photo :</strong>{" "}
+                <img
+                  src={user.photoURL || "/default-avatar.png"}
+                  alt="User Profile"
+                  className="h-8 w-8 rounded-full border-2 border-gray-300"
+                  referrerPolicy="no-referrer"
+                />
+              </p>
+            </div>
+
+            <div className="mb-4">
               <p className="text-gray-700 dark:text-gray-300">
                 <strong>Name:</strong> {user?.displayName}
               </p>
@@ -133,11 +151,7 @@ const MyProfilePage = () => {
                 <strong>Email:</strong> {user?.email}
               </p>
             </div>
-            <div className="mb-4">
-              <p className="text-gray-700 dark:text-gray-300">
-                <strong>Phone:</strong> {user?.phone || "Not provided"}
-              </p>
-            </div>
+
             <button
               onClick={() => setIsEditing(true)}
               className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"

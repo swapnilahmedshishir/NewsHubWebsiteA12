@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { auth, googleProvider } from "../Component/Auth/FirebaseAuth";
 import { useAxiospublic } from "../Hook/useAxiospublic";
+import { toast } from "react-toastify";
 
 export const AppContext = createContext();
 
@@ -48,23 +49,27 @@ const ContextProvider = ({ children }) => {
   const updateProfileData = async (updatedInfo) => {
     if (auth.currentUser) {
       try {
-        // Update Firebase user profile
         await updateProfile(auth.currentUser, {
           displayName: updatedInfo.name,
           photoURL: updatedInfo.photoURL,
         });
 
-        // Sync with backend API
-        const response = await fetch(`${apiUrl}/api/update-profile`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedInfo),
-        });
+        // Send updated info to backend
+        const response = await axiosPublic.put(
+          "/api/update-profile",
+          updatedInfo
+        );
 
-        if (response.ok) {
+        if (response.data.status === 200) {
           const updatedUser = await response.json();
-          setUser(updatedUser);
+          setUser((prev) => ({
+            ...prev,
+            displayName: updatedUser.name,
+            photoURL: updatedUser.photoURL,
+            email: updatedUser.email,
+          }));
           toast.success("Profile updated successfully!");
+          return updateUser;
         } else {
           const error = await response.json();
           toast.error(error.message || "Failed to update profile.");
