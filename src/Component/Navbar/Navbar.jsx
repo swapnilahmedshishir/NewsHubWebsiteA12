@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { AppContext } from "../../Context/ContextProvider";
 import { toast } from "react-toastify";
@@ -9,13 +9,17 @@ const Navbar = () => {
   const { user, logoutUser } = useContext(AppContext);
   const [isAdmin, isAdminLoading] = useAdmin();
   const [data, isUserLoading, refetch] = useLoginUserInfo();
-  console.log(data);
+
+  // Automatically refetch when certain conditions change
+  // useEffect(() => {
+  //   if (user) {
+  //     refetch();
+  //   }
+  // }, [user, refetch]);
 
   // Function to check if a user is premium
-  const isPremiumUser = () => {
-    refetch();
-    return data?.premiumTaken && new Date(data.premiumTaken) > new Date();
-  };
+  const isPremiumUser =
+    data?.premiumTaken && new Date(data.premiumTaken) > new Date();
 
   const handleLogout = () => {
     logoutUser()
@@ -84,7 +88,7 @@ const Navbar = () => {
                 My Articles
               </NavLink>
             </li>
-            {isPremiumUser() && (
+            {!isUserLoading && isPremiumUser && (
               <li>
                 <NavLink to="/premium-articles" activeClassName="active">
                   Premium Articles
@@ -133,7 +137,7 @@ const Navbar = () => {
               My Articles
             </NavLink>
           </li>
-          {isPremiumUser() && (
+          {!isUserLoading && isPremiumUser && (
             <li>
               <NavLink to="/premium-articles" activeClassName="active">
                 Premium Articles

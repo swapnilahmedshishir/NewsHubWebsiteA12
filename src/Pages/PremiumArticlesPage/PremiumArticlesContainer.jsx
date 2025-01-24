@@ -19,8 +19,6 @@ const PremiumArticlesContainer = () => {
     },
   });
 
-  console.log(allArticles);
-
   return <PremiumArticlesPage articles={allArticles} />;
 };
 

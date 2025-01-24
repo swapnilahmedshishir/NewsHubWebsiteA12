@@ -37,10 +37,12 @@ const AllArticlesPage = () => {
     selectedTags,
   });
 
-  // Filter out declined articles
+  // Assuming articles is your array of articles
   const filteredArticles = articles.filter(
-    (article) => article.status !== "Declined"
+    (article) => article.status === "Approved"
   );
+
+  console.log(filteredArticles);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading articles: {error.message}</div>;
@@ -94,7 +96,7 @@ const AllArticlesPage = () => {
 
       {/* Articles List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredArticles.map((article) => (
+        {filteredArticles?.map((article) => (
           <div
             key={article._id}
             className={`p-4 border rounded shadow-sm ${

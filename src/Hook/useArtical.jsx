@@ -61,7 +61,7 @@ const useArtical = ({ searchTerm, selectedPublisher, selectedTags }) => {
     }
   }, [queryError]);
 
-  return [filteredArticles, isLoading, error];
+  return [filteredArticles, isLoading, error, refetch];
 };
 
 export default useArtical;
