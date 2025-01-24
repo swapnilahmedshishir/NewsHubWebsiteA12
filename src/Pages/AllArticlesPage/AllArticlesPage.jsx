@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../Context/ContextProvider";
 import useArtical from "../../Hook/useArtical";
 import axios from "axios";
+import { tagOptions } from "../../Component/TagOption";
 
 const AllArticlesPage = () => {
   const { apiUrl } = useContext(AppContext);
@@ -17,12 +18,11 @@ const AllArticlesPage = () => {
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        const [publisherResponse, tagResponse] = await Promise.all([
+        const [publisherResponse] = await Promise.all([
           axios.get(`${apiUrl}/api/publishers`),
-          axios.get(`${apiUrl}/api/tags`),
         ]);
         setPublishers(publisherResponse.data);
-        setTags(tagResponse.data);
+        setTags(tagOptions);
       } catch (error) {
         console.error("Error fetching filters:", error);
       }
@@ -68,7 +68,7 @@ const AllArticlesPage = () => {
         >
           <option value="">All Publishers</option>
           {publishers.map((publisher) => (
-            <option key={publisher.id} value={publisher.name}>
+            <option key={publisher.id} value={publisher?.name}>
               {publisher.name}
             </option>
           ))}
@@ -76,18 +76,17 @@ const AllArticlesPage = () => {
 
         {/* Tags Dropdown */}
         <select
-          multiple
           value={selectedTags}
           onChange={(e) =>
             setSelectedTags(
               Array.from(e.target.selectedOptions, (option) => option.value)
             )
           }
-          className="w-full md:w-1/3 h-10 p-2 border border-gray-300 rounded"
+          className="w-full md:w-1/3 h-10 p-2 border border-gray-300 rounded bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         >
-          {tags.map((tag) => (
-            <option key={tag.id} value={tag.name}>
-              {tag.name}
+          {tags.map((tag, index) => (
+            <option key={index} value={tag.value}>
+              {tag.label}
             </option>
           ))}
         </select>
@@ -108,7 +107,9 @@ const AllArticlesPage = () => {
               className="w-full h-48 object-cover rounded mb-4"
             />
             <h2 className="text-xl font-semibold mb-2">{article.title}</h2>
-            <p className="text-gray-700 mb-2">{article.description}</p>
+            <p className="text-gray-700 mb-2">
+              {article.description.slice(0, 100)}...
+            </p>
             <p className="text-sm text-gray-500 mb-4">
               Publisher: {article.publisher}
             </p>

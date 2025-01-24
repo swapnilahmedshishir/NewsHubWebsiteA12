@@ -1,19 +1,38 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { AppContext } from "../../Context/ContextProvider";
+import useAxiosSequre from "../../Hook/useAxiosSequre";
 
 const PaymentPage = () => {
+  const { apiUrl, user } = useContext(AppContext);
+  const axiosSecure = useAxiosSequre();
   const location = useLocation();
   const navigate = useNavigate();
 
   const { period, price } = location.state || {};
 
-  const handlePayment = () => {
-    // Simulate payment success
-    alert("Payment Successful!");
+  const handlePayment = async () => {
+    console.log({
+      uid: user?.uid,
+      period,
+    });
 
-    // Update user as premium (this should ideally be handled on the backend)
-    // Redirect back to home or dashboard
-    navigate("/dashboard");
+    try {
+      // Simulate updating the user's premium status
+      const currentTime = new Date();
+      await axiosSecure.put("/api/user/updatePremium", {
+        uid: user?.uid,
+        premiumTaken: currentTime,
+        period,
+      });
+
+      alert("Payment Successful!");
+      navigate("/");
+    } catch (error) {
+      console.error("Error updating premium status:", error);
+      alert("Payment failed. Please try again.");
+    }
   };
 
   if (!period || !price) {

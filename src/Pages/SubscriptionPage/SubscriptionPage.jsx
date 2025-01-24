@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SubscriptionPage = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("");
   const navigate = useNavigate();
 
+  // Prices for each subscription period
   const subscriptionPrices = {
-    "1 minute": 10, // Example price
+    "1 minute": 10,
     "5 days": 100,
     "10 days": 200,
   };
@@ -17,7 +19,7 @@ const SubscriptionPage = () => {
       return;
     }
 
-    // Navigate to payment page with subscription details
+    // Navigate to the payment page with subscription details
     navigate("/payment", {
       state: {
         period: selectedPeriod,
@@ -28,6 +30,13 @@ const SubscriptionPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-teal-400 to-blue-500">
+      {/* Banner */}
+      <div className="bg-blue-600 text-white p-4 rounded-lg mb-6 shadow-lg text-center">
+        <h1 className="text-2xl font-bold">Upgrade to Premium!</h1>
+        <p>Enjoy exclusive benefits with our premium subscription.</p>
+      </div>
+
+      {/* Subscription Options */}
       <div className="bg-white rounded-lg shadow-lg p-6 w-96">
         <h1 className="text-center text-lg font-bold text-gray-800 mb-4">
           Choose Your Subscription
