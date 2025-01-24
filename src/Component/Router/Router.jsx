@@ -17,6 +17,7 @@ import AllUsersPage from "../../Dashboard/Pages/AllUsersPage";
 import AddPublisherPage from "../../Dashboard/Pages/AddPublisherPage";
 import AllDasbordArticlesPage from "../../Dashboard/Pages/AllDasbordArticlesPage";
 import MyArticles from "../../Pages/MyArticles/MyArticles";
+import UpdateArticalPage from "../../Pages/UpdateArticalPage/UpdateArticalPage";
 
 const RoutersItems = [
   {
@@ -81,6 +82,22 @@ const RoutersItems = [
         element: (
           <PrivateRoute>
             <MyArticles />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/articleDetails/:id",
+        element: (
+          <PrivateRoute>
+            <ArticleDetailsPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/updateArticle/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateArticalPage />
           </PrivateRoute>
         ),
       },

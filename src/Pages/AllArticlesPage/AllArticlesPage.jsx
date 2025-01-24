@@ -31,12 +31,16 @@ const AllArticlesPage = () => {
   }, [apiUrl]);
 
   // Fetch articles with the custom hook
-  const [filteredArticles, isLoading, error] = useArtical({
+  const [articles, isLoading, error] = useArtical({
     searchTerm,
     selectedPublisher,
     selectedTags,
   });
-  console.log(filteredArticles);
+
+  // Filter out declined articles
+  const filteredArticles = articles.filter(
+    (article) => article.status !== "Declined"
+  );
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading articles: {error.message}</div>;
@@ -95,7 +99,7 @@ const AllArticlesPage = () => {
           <div
             key={article._id}
             className={`p-4 border rounded shadow-sm ${
-              article.isPremium ? "bg-yellow-100" : "bg-white"
+              article.isPremium ? "bg-yellow-100 border-yellow-400" : "bg-white"
             }`}
           >
             <img
@@ -110,7 +114,7 @@ const AllArticlesPage = () => {
             </p>
 
             <button
-              onClick={() => navigate(`/articles/${article.id}`)}
+              onClick={() => navigate(`/articles/${article._id}`)}
               disabled={article.isPremium && !article.hasSubscription}
               className={`w-full py-2 px-4 rounded text-white font-semibold ${
                 article.isPremium && !article.hasSubscription
