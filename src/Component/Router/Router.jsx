@@ -3,7 +3,7 @@ import AddArticlePage from "../../Pages/AddArticlePage/AddArticlePage";
 import AllArticlesPage from "../../Pages/AllArticlesPage/AllArticlesPage";
 import ArticleDetailsPage from "../../Pages/ArticleDetailsPage/ArticleDetailsPage";
 import Erro from "../../Pages/ErroPage/ErroPage";
-import { HomePage } from "../../Pages/Home/HomePage";
+import HomePage from "../../Pages/Home/HomePage";
 import MyProfilePage from "../../Pages/MyProfilePage/MyProfilePage";
 import PaymentPage from "../../Pages/PaymentPage/PaymentPage";
 import PremiumArticlesContainer from "../../Pages/PremiumArticlesPage/PremiumArticlesContainer";

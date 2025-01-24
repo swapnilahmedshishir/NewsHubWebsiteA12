@@ -3,10 +3,19 @@ import { NavLink } from "react-router-dom";
 import { AppContext } from "../../Context/ContextProvider";
 import { toast } from "react-toastify";
 import useAdmin from "../../Hook/useAdmin";
+import useLoginUserInfo from "../../Hook/useLoginUserInfo";
 
 const Navbar = () => {
   const { user, logoutUser } = useContext(AppContext);
   const [isAdmin, isAdminLoading] = useAdmin();
+  const [data, isUserLoading, refetch] = useLoginUserInfo();
+  console.log(data);
+
+  // Function to check if a user is premium
+  const isPremiumUser = () => {
+    refetch();
+    return data?.premiumTaken && new Date(data.premiumTaken) > new Date();
+  };
 
   const handleLogout = () => {
     logoutUser()
@@ -63,7 +72,7 @@ const Navbar = () => {
                 Subscription
               </NavLink>
             </li>
-            {isAdmin === "true" && (
+            {!isAdminLoading && isAdmin && (
               <li>
                 <NavLink to="/dashboard" activeClassName="active">
                   Dashboard
@@ -75,11 +84,13 @@ const Navbar = () => {
                 My Articles
               </NavLink>
             </li>
-            <li>
-              <NavLink to="/premium-articles" activeClassName="active">
-                Premium Articles
-              </NavLink>
-            </li>
+            {isPremiumUser() && (
+              <li>
+                <NavLink to="/premium-articles" activeClassName="active">
+                  Premium Articles
+                </NavLink>
+              </li>
+            )}
           </ul>
         </div>
         <NavLink to="/" className="btn btn-ghost text-xl">
@@ -122,11 +133,13 @@ const Navbar = () => {
               My Articles
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/premium-articles" activeClassName="active">
-              Premium Articles
-            </NavLink>
-          </li>
+          {isPremiumUser() && (
+            <li>
+              <NavLink to="/premium-articles" activeClassName="active">
+                Premium Articles
+              </NavLink>
+            </li>
+          )}
         </ul>
       </div>
 

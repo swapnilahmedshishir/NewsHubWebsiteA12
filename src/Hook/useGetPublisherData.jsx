@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSequre from "./useAxiosSequre";
+import { useAxiospublic } from "./useAxiospublic";
+// import useAxiosSequre from "./useAxiosSequre";
 
 const useGetPublisherData = () => {
-  const axiosSeque = useAxiosSequre();
+  const axiosPublic = useAxiospublic();
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["publishers"],
     queryFn: async () => {
-      const response = await axiosSeque.get("/api/publishers");
+      const response = await axiosPublic.get("/api/publishers");
       return response.data;
     },
   });

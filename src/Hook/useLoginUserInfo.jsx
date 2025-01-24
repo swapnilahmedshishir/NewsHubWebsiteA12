@@ -7,19 +7,21 @@ const useLoginUserInfo = () => {
   const { user, isLoading } = useContext(AppContext);
   const axiosSecure = useAxiosSequre();
   // Use React Query to fetch the admin status
-  const { data, isLoading: isAdminLoading } = useQuery({
+  const {
+    data,
+    isLoading: isUserLoading,
+    refetch,
+  } = useQuery({
     queryKey: [user?.email, "loginUserInfo"],
     enabled: !isLoading,
     queryFn: async () => {
       if (!user?.email) return false;
-      // API call to get user info
       const response = await axiosSecure.get(`/api/loginUser/${user?.email}`);
-      console.log("User data:", response.data);
-      return response.data.isAdmin;
+      return response.data;
     },
   });
 
-  return [data, isAdminLoading];
+  return [data, isUserLoading, refetch];
 };
 
 export default useLoginUserInfo;
