@@ -3,8 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AppContext } from "../../Context/ContextProvider";
 import useAxiosSequre from "../../Hook/useAxiosSequre";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 const PaymentPage = () => {
+  const client = useQueryClient();
   const { apiUrl, user } = useContext(AppContext);
   const axiosSecure = useAxiosSequre();
   const location = useLocation();
@@ -26,12 +29,16 @@ const PaymentPage = () => {
         premiumTaken: currentTime,
         period,
       });
-
-      alert("Payment Successful!");
+      toast.success("Payment Successful!");
+      client.invalidateQueries({
+        queryKey: [user?.email, "loginUserInfo"],
+      });
       navigate("/");
+      // window.location.href = "/";
     } catch (error) {
       console.error("Error updating premium status:", error);
-      alert("Payment failed. Please try again.");
+
+      toast.error("Payment failed. Please try again.");
     }
   };
 

@@ -180,7 +180,7 @@ const UpdateArticlePage = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          className="w-full bg-gradient-to-r from-blue-400 to-green-500 text-white py-2 rounded hover:bg-gradient-to-r from-blue-500 to-green-500"
         >
           Update Article
         </button>

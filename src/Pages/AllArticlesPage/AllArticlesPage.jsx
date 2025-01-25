@@ -122,7 +122,7 @@ const AllArticlesPage = () => {
               className={`w-full py-2 px-4 rounded text-white font-semibold ${
                 article.isPremium && !article.hasSubscription
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-500 hover:bg-blue-600"
+                  : "bg-gradient-to-r from-blue-400 to-green-500 hover:bg-gradient-to-r from-blue-500 to-green-500"
               }`}
             >
               {article.isPremium && !article.hasSubscription

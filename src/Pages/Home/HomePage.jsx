@@ -17,7 +17,7 @@ const HomePage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowModal(true);
-    }, 10000); // 10 seconds
+    }, 10000); //10s
 
     return () => clearTimeout(timer);
   }, []);
@@ -73,7 +73,7 @@ const HomePage = () => {
             </ul>
             <NavLink
               to="/subscription"
-              className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded"
+              className="mt-4 inline-block bg-gradient-to-r from-blue-500 to-green-500 text-white py-2 px-4 rounded"
             >
               Subscribe
             </NavLink>
@@ -86,7 +86,7 @@ const HomePage = () => {
             </ul>
             <NavLink
               to="/subscription"
-              className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded"
+              className="mt-4 inline-block bg-gradient-to-r from-blue-500 to-green-500 text-white py-2 px-4 rounded"
             >
               Subscribe
             </NavLink>
@@ -116,7 +116,7 @@ const HomePage = () => {
           />
           <button
             type="submit"
-            className="mt-4 bg-blue-600 text-white py-2 px-4 rounded"
+            className="mt-4 bg-gradient-to-r from-blue-500 to-green-500 text-white py-2 px-4 rounded"
           >
             Subscribe
           </button>
@@ -135,7 +135,7 @@ const HomePage = () => {
             <div className="flex justify-between gap-4">
               <button
                 onClick={handleSubscribeClick}
-                className="bg-blue-600 text-white py-2 px-4 rounded"
+                className="bg-gradient-to-r from-blue-500 to-green-500 text-white py-2 px-4 rounded"
               >
                 Go to Subscription Page
               </button>

@@ -6,10 +6,13 @@ import { toast } from "react-toastify";
 import { AppContext } from "../../Context/ContextProvider";
 import useGetPublisherData from "../../Hook/useGetPublisherData";
 import { useAxiospublic } from "../../Hook/useAxiospublic";
+import useLoginUserInfo from "../../Hook/useLoginUserInfo";
+import useAxiosSequre from "../../Hook/useAxiosSequre";
 
 const AddArticlePage = () => {
   const { apiUrl, user } = useContext(AppContext);
   const axiosPublic = useAxiospublic();
+  const axiosSequre = useAxiosSequre();
   const [data, isLoading, refetch] = useGetPublisherData();
   const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
@@ -18,6 +21,8 @@ const AddArticlePage = () => {
   const [tags, setTags] = useState([]);
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
+
+  const [userLoginInfo] = useLoginUserInfo();
 
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 
@@ -72,39 +77,93 @@ const AddArticlePage = () => {
     }
   };
 
-  console.log(user);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    toast.info("Uploading image...");
-    const uploadedImageUrl = await handleImageUpload();
-
-    if (!uploadedImageUrl) {
-      toast.error("Cannot submit the article without a valid image.");
-      return;
-    }
-
-    const articleData = {
-      title,
-      image: uploadedImageUrl,
-      authorName: user?.displayName,
-      authorEmail: user?.email,
-      authorPhoto: user?.photoURL,
-      publisher: selectedPublisher?.label,
-      tags: tags.map((tag) => tag.value),
-      description,
-    };
-
+    // Check if the user is allowed to post an article
     try {
-      await axiosPublic.post(`/api/articles`, articleData);
-      toast.success("Article submitted successfully! Awaiting admin approval.");
-      navigate("/");
+      const response = await axiosSequre.get(`/api/checklimit`, {
+        params: { email: user?.email },
+      });
+      if (response.data.isAllowed) {
+        const uploadedImageUrl = await handleImageUpload();
+        if (!uploadedImageUrl) {
+          toast.error("Cannot submit the article without a valid image.");
+          return;
+        }
+        toast.info("Uploading image...");
+
+        const articleData = {
+          title,
+          image: uploadedImageUrl,
+          authorName: user?.displayName,
+          authorEmail: user?.email,
+          authorPhoto: user?.photoURL,
+          publisher: selectedPublisher?.label,
+          tags: tags.map((tag) => tag.value),
+          description,
+        };
+
+        // Post the article
+        await axiosPublic.post(`/api/articles`, articleData);
+        toast.success(
+          "Article submitted successfully! Awaiting admin approval."
+        );
+        navigate("/");
+      } else {
+        toast.error(
+          "You have reached your posting limit. Upgrade to a premium plan to post more articles."
+        );
+      }
     } catch (error) {
-      console.error("Error submitting article:", error);
-      toast.error("Failed to submit the article. Please try again.");
+      console.error("Error checking posting limit:", error);
+      toast.error("Failed to check posting limit. Please try again.");
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!userLoginInfo) {
+  //     toast.error("User information not found. Please log in.");
+  //     return;
+  //   }
+
+  //   // Check if the user is a premium user
+  //   const isPremium =
+  //     userLoginInfo.premiumTaken &&
+  //     new Date(userLoginInfo.premiumTaken).getTime() > new Date().getTime();
+
+  //   console.log(isPremium);
+
+  //   toast.info("Uploading image...");
+  //   const uploadedImageUrl = await handleImageUpload();
+
+  //   if (!uploadedImageUrl) {
+  //     toast.error("Cannot submit the article without a valid image.");
+  //     return;
+  //   }
+
+  //   const articleData = {
+  //     title,
+  //     image: uploadedImageUrl,
+  //     authorName: user?.displayName,
+  //     authorEmail: user?.email,
+  //     authorPhoto: user?.photoURL,
+  //     publisher: selectedPublisher?.label,
+  //     tags: tags.map((tag) => tag.value),
+  //     description,
+  //   };
+
+  //   try {
+  //     await axiosPublic.post(`/api/articles`, articleData);
+  //     toast.success("Article submitted successfully! Awaiting admin approval.");
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.error("Error submitting article:", error);
+  //     toast.error("Failed to submit the article. Please try again.");
+  //   }
+  // };
 
   return (
     <div className="container mx-auto p-4">
@@ -155,7 +214,7 @@ const AddArticlePage = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          className="w-full bg-gradient-to-r   text-white py-2 rounded hover:bg-gradient-to-r from-blue-500 to-green-500"
         >
           Submit Article
         </button>

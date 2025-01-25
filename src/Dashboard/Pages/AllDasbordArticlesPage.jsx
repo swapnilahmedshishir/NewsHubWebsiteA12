@@ -191,7 +191,7 @@ const AllDashboardArticlesPage = () => {
                   <MdDelete />
                 </button>
                 <button
-                  className="bg-blue-500 text-white px-4 py-1 rounded"
+                  className="bg-gradient-to-r from-blue-400 to-green-500 text-white px-4 py-1 rounded"
                   onClick={() => handleMakePremium(article._id)}
                   title="Make Article Premium"
                 >

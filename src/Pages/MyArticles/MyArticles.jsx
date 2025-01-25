@@ -155,7 +155,7 @@ const MyArticles = () => {
                 </td>
                 <td className="py-3 px-4 flex gap-2">
                   <Link to={`/articleDetails/${article._id}`}>
-                    <button className="bg-blue-500 text-white px-4 py-1 rounded">
+                    <button className="bg-gradient-to-r from-blue-400 to-green-500 text-white px-4 py-1 rounded">
                       Details
                     </button>
                   </Link>

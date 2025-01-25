@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const SubscriptionPage = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("");
@@ -15,7 +16,7 @@ const SubscriptionPage = () => {
 
   const handleSubscription = () => {
     if (!selectedPeriod) {
-      alert("Please select a subscription period.");
+      toast.info("Please select a subscription period.");
       return;
     }
 
@@ -31,7 +32,7 @@ const SubscriptionPage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-teal-400 to-blue-500">
       {/* Banner */}
-      <div className="bg-blue-600 text-white p-4 rounded-lg mb-6 shadow-lg text-center">
+      <div className="bg-gradient-to-r from-blue-500 to-green-500 text-white p-4 rounded-lg mb-6 shadow-lg text-center">
         <h1 className="text-2xl font-bold">Upgrade to Premium!</h1>
         <p>Enjoy exclusive benefits with our premium subscription.</p>
       </div>
@@ -60,7 +61,7 @@ const SubscriptionPage = () => {
         </div>
         <button
           onClick={handleSubscription}
-          className="w-full bg-blue-500 text-white py-2 rounded mt-4 hover:bg-blue-600"
+          className="w-full bg-gradient-to-r from-blue-400 to-green-500 text-white py-2 rounded mt-4 hover:bg-gradient-to-r from-blue-500 to-green-500"
         >
           Subscribe Now
         </button>

@@ -18,7 +18,7 @@ const Dashboard = () => {
         <ul className="menu space-y-4 text-white">
           <li>
             <NavLink
-              to="maindashboard"
+              to="/dashboard/maindashboard"
               className="flex items-center p-2 rounded-md hover:bg-indigo-700"
             >
               <FaTachometerAlt className="mr-2" /> Dashboard

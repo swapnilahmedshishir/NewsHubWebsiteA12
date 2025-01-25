@@ -113,7 +113,7 @@ const Login = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-[#031741] via-[#03d2fc] to-[#022d33] text-white font-bold rounded-lg hover:bg-blue-500 transition duration-300"
+            className="w-full py-3 bg-gradient-to-r from-[#031741] via-[#03d2fc] to-[#022d33] text-white font-bold rounded-lg hover:bg-gradient-to-r from-blue-400 to-green-500 transition duration-300"
           >
             Login
           </button>

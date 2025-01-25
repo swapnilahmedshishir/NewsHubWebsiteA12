@@ -114,7 +114,7 @@ const MyProfilePage = () => {
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-lg hover:bg-blue-700"
               >
                 Save
               </button>
@@ -147,7 +147,7 @@ const MyProfilePage = () => {
 
             <button
               onClick={() => setIsEditing(true)}
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-lg hover:bg-blue-700"
             >
               Edit Profile
             </button>

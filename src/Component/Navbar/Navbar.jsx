@@ -10,6 +10,8 @@ const Navbar = () => {
   const [isAdmin, isAdminLoading] = useAdmin();
   const [data, isUserLoading, refetch] = useLoginUserInfo();
 
+  console.log(data);
+
   // Automatically refetch when certain conditions change
   useEffect(() => {
     if (!isLoading) {
@@ -78,7 +80,7 @@ const Navbar = () => {
             </li>
             {!isAdminLoading && isAdmin && (
               <li>
-                <NavLink to="/dashboard" activeClassName="active">
+                <NavLink to="/dashboard/maindashboard" activeClassName="active">
                   Dashboard
                 </NavLink>
               </li>
@@ -127,7 +129,7 @@ const Navbar = () => {
           </li>
           {!isAdminLoading && isAdmin && (
             <li>
-              <NavLink to="/dashboard" activeClassName="active">
+              <NavLink to="/dashboard/maindashboard" activeClassName="active">
                 Dashboard
               </NavLink>
             </li>

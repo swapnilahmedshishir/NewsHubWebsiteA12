@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 const AllUsersPage = () => {
   const axiosSequre = useAxiosSequre();
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10); // Number of users per page
+  const [pageSize] = useState(10);
 
   // Fetch users with pagination
   const {
@@ -86,7 +86,7 @@ const AllUsersPage = () => {
                         </span>
                       ) : (
                         <button
-                          className="bg-blue-500 text-white px-2 py-1 rounded"
+                          className="bg-gradient-to-r from-blue-400 to-green-500 text-white px-2 py-1 rounded"
                           onClick={() => handleMakeAdmin(user._id)}
                         >
                           Make Admin
@@ -117,7 +117,7 @@ const AllUsersPage = () => {
                 key={index}
                 className={`px-3 py-1 mx-1 rounded ${
                   currentPage === index + 1
-                    ? "bg-blue-500 text-white"
+                    ? "bg-gradient-to-r from-blue-400 to-green-500 text-white"
                     : "bg-gray-200"
                 }`}
                 onClick={() => setCurrentPage(index + 1)}
