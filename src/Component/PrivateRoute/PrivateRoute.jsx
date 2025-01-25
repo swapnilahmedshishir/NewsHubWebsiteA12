@@ -2,11 +2,9 @@ import React, { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { AppContext } from "../../Context/ContextProvider";
 
-// Mock authentication status (replace this with your actual auth logic)
-
 const PrivateRoute = ({ children }) => {
-  const location = useLocation();
   const { user } = useContext(AppContext);
+  const location = useLocation();
 
   if (user) {
     return children;

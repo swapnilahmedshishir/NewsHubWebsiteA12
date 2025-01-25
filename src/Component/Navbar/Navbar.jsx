@@ -10,8 +10,6 @@ const Navbar = () => {
   const [isAdmin, isAdminLoading] = useAdmin();
   const [data, isUserLoading, refetch] = useLoginUserInfo();
 
-  console.log(data);
-
   // Automatically refetch when certain conditions change
   useEffect(() => {
     if (!isLoading) {

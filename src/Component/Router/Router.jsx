@@ -18,6 +18,7 @@ import AddPublisherPage from "../../Dashboard/Pages/AddPublisherPage";
 import AllDasbordArticlesPage from "../../Dashboard/Pages/AllDasbordArticlesPage";
 import MyArticles from "../../Pages/MyArticles/MyArticles";
 import UpdateArticalPage from "../../Pages/UpdateArticalPage/UpdateArticalPage";
+import AdminRoute from "../PrivateRoute/AdminRoute";
 
 const RoutersItems = [
   {
@@ -118,26 +119,42 @@ const RoutersItems = [
   {
     path: "dashboard",
     element: (
-      <PrivateRoute>
+      <AdminRoute>
         <Dashboard />
-      </PrivateRoute>
+      </AdminRoute>
     ),
     children: [
       {
         path: "maindashboard",
-        element: <DashboardPage />,
+        element: (
+          <AdminRoute>
+            <DashboardPage />
+          </AdminRoute>
+        ),
       },
       {
         path: "all-users",
-        element: <AllUsersPage />,
+        element: (
+          <AdminRoute>
+            <AllUsersPage />
+          </AdminRoute>
+        ),
       },
       {
         path: "add-publisher",
-        element: <AddPublisherPage />,
+        element: (
+          <AdminRoute>
+            <AddPublisherPage />
+          </AdminRoute>
+        ),
       },
       {
         path: "all-articles",
-        element: <AllDasbordArticlesPage />,
+        element: (
+          <AdminRoute>
+            <AllDasbordArticlesPage />
+          </AdminRoute>
+        ),
       },
     ],
   },

@@ -36,7 +36,6 @@ const useAxiosSequre = () => {
         const statusCode = error.response?.status;
         if (statusCode === 401 || statusCode === 403) {
           await logoutUser();
-          // Navigate inside useEffect
           navigate("/login", { replace: true });
         }
         return Promise.reject(error);

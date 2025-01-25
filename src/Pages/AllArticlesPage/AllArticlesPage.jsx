@@ -4,6 +4,8 @@ import { AppContext } from "../../Context/ContextProvider";
 import useArtical from "../../Hook/useArtical";
 import axios from "axios";
 import { tagOptions } from "../../Component/TagOption";
+import { toast } from "react-toastify";
+import useLoginUserInfo from "../../Hook/useLoginUserInfo";
 
 const AllArticlesPage = () => {
   const { apiUrl } = useContext(AppContext);
@@ -13,6 +15,13 @@ const AllArticlesPage = () => {
   const [publishers, setPublishers] = useState([]);
   const [tags, setTags] = useState([]);
   const navigate = useNavigate();
+
+  const [userInfo] = useLoginUserInfo();
+
+  // Check if the user has an active subscription
+  const hasActiveSubscription = userInfo?.premiumTaken
+    ? new Date(userInfo.premiumTaken) > new Date()
+    : false;
 
   // Fetch publishers and tags dynamically
   useEffect(() => {
@@ -24,7 +33,7 @@ const AllArticlesPage = () => {
         setPublishers(publisherResponse.data);
         setTags(tagOptions);
       } catch (error) {
-        console.error("Error fetching filters:", error);
+        toast.error("Error fetching filters");
       }
     };
     fetchFilters();
@@ -37,12 +46,9 @@ const AllArticlesPage = () => {
     selectedTags,
   });
 
-  // Assuming articles is your array of articles
   const filteredArticles = articles.filter(
     (article) => article.status === "Approved"
   );
-
-  console.log(filteredArticles);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading articles: {error.message}</div>;
@@ -70,7 +76,7 @@ const AllArticlesPage = () => {
         >
           <option value="">All Publishers</option>
           {publishers.map((publisher) => (
-            <option key={publisher.id} value={publisher?.name}>
+            <option key={publisher._id} value={publisher?.name}>
               {publisher.name}
             </option>
           ))}
@@ -118,14 +124,14 @@ const AllArticlesPage = () => {
 
             <button
               onClick={() => navigate(`/articles/${article._id}`)}
-              disabled={article.isPremium && !article.hasSubscription}
+              disabled={article.isPremium && !hasActiveSubscription}
               className={`w-full py-2 px-4 rounded text-white font-semibold ${
-                article.isPremium && !article.hasSubscription
+                article.isPremium && !hasActiveSubscription
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-blue-400 to-green-500 hover:bg-gradient-to-r from-blue-500 to-green-500"
+                  : "bg-gradient-to-r from-blue-400 to-green-500 hover:bg-gradient-to-r"
               }`}
             >
-              {article.isPremium && !article.hasSubscription
+              {article.isPremium && !hasActiveSubscription
                 ? "Subscribe to View"
                 : "View Details"}
             </button>

@@ -28,7 +28,6 @@ const AllDashboardArticlesPage = () => {
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
-  console.log(articles);
 
   // Approve an article
   const handleApprove = async (id) => {
@@ -79,7 +78,7 @@ const AllDashboardArticlesPage = () => {
       if (result.isConfirmed) {
         try {
           const response = await axiosSecure.delete(`/api/articles/${id}`);
-          if (response.status === 200) {
+          if (response.status) {
             toast.success("Article deleted successfully!");
             refetch();
             Swal.fire({
@@ -102,17 +101,14 @@ const AllDashboardArticlesPage = () => {
       const response = await axiosSecure.patch(
         `/api/articles/${id}/make-premium`
       );
-      if (response.status === 200) {
+      if (response.status) {
         toast.success("Article is now premium!");
         refetch();
       }
     } catch (error) {
-      console.error("Error making article premium:", error);
       toast.error("Failed to make the article premium!");
     }
   };
-
-  console.log(articles);
 
   if (isLoading) {
     return <p>Loading articles...</p>;
@@ -137,7 +133,7 @@ const AllDashboardArticlesPage = () => {
           </tr>
         </thead>
         <tbody>
-          {articles.map((article) => (
+          {articles?.map((article) => (
             <tr key={article._id}>
               <td className="border px-4 py-2">{article.title}</td>
               <td className="border px-4 py-2 flex items-center space-x-2">

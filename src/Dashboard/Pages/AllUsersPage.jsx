@@ -38,7 +38,7 @@ const AllUsersPage = () => {
         toast.error("Failed to promote user to admin.");
       }
     } catch (error) {
-      console.error("Error making user admin:", error);
+      // console.error("Error making user admin:", error);
       toast.error("An error occurred while making user admin.");
     }
   };

@@ -5,29 +5,38 @@ import Hero from "./Hero";
 import useGetPublisherData from "../../Hook/useGetPublisherData";
 import useAxiosSequre from "../../Hook/useAxiosSequre";
 import Statistics from "./Statistics";
+import useLoginUserInfo from "../../Hook/useLoginUserInfo";
+import WhyChoose from "./WhyChoose";
+import Plans from "./Plans";
 
 const HomePage = () => {
-  const [trendingArticles, setTrendingArticles] = useState([]);
   const [data] = useGetPublisherData();
+  const [userInfo] = useLoginUserInfo();
   const axiosSequre = useAxiosSequre();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  // Show the modal after 10 seconds
+  console.log(userInfo);
+
+  // Check if the user has an active premium subscription
+  const hasPremium =
+    userInfo?.premiumTaken && new Date(userInfo.premiumTaken) > new Date();
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowModal(true);
-    }, 10000); //10s
+    if (!hasPremium) {
+      // Show the modal after 10 seconds if the user does not have a premium subscription
+      const timer = setTimeout(() => {
+        setShowModal(true);
+      }, 10000);
 
-    return () => clearTimeout(timer);
-  }, []);
+      return () => clearTimeout(timer);
+    }
+  }, [hasPremium]);
 
-  // Handle the button click to navigate to the subscription page
   const handleSubscribeClick = () => {
     navigate("/subscription");
   };
 
-  // Handle the cancel button to close the modal
   const handleCancelClick = () => {
     setShowModal(false);
   };
@@ -62,65 +71,48 @@ const HomePage = () => {
       <Statistics />
 
       {/* Plans Section */}
-      <section className="py-10 bg-gray-100">
-        <h2 className="text-3xl font-bold text-center text-gray-800">Plans</h2>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 mx-auto max-w-5xl">
-          <div className="bg-white shadow-md p-6 rounded-lg">
-            <h3 className="text-xl font-semibold">Free Plan</h3>
-            <ul className="mt-4 list-disc pl-4 text-gray-600">
-              <li>Access to all free articles</li>
-              <li>Limited views per month</li>
-            </ul>
-            <NavLink
-              to="/subscription"
-              className="mt-4 inline-block bg-gradient-to-r from-blue-500 to-green-500 text-white py-2 px-4 rounded"
-            >
-              Subscribe
-            </NavLink>
-          </div>
-          <div className="bg-white shadow-md p-6 rounded-lg">
-            <h3 className="text-xl font-semibold">Premium Plan</h3>
-            <ul className="mt-4 list-disc pl-4 text-gray-600">
-              <li>Unlimited article views</li>
-              <li>Exclusive premium articles</li>
-            </ul>
-            <NavLink
-              to="/subscription"
-              className="mt-4 inline-block bg-gradient-to-r from-blue-500 to-green-500 text-white py-2 px-4 rounded"
-            >
-              Subscribe
-            </NavLink>
-          </div>
-        </div>
-      </section>
+      <Plans />
 
-      {/* Additional Unique Sections */}
-      <section className="py-10 bg-white">
-        <h2 className="text-3xl font-bold text-center text-gray-800">
-          Why Choose Us?
-        </h2>
-        <p className="mt-4 text-center max-w-2xl mx-auto text-gray-600">
-          Experience a seamless way to stay updated with the best articles,
-          tailored to your interests.
-        </p>
-      </section>
-      <section className="py-10 bg-gray-100">
-        <h2 className="text-3xl font-bold text-center text-gray-800">
-          Subscribe to our Newsletter
-        </h2>
-        <form className="mt-6 flex flex-col items-center">
-          <input
-            type="email"
-            placeholder="Your email"
-            className="input input-bordered w-full max-w-xs"
+      {/* Unique Sections */}
+      {/* why choose  */}
+      <WhyChoose />
+      {/* news letter  */}
+      <section className="py-16 bg-gradient-to-r from-blue-100 to-blue-200">
+        <div className="container mx-auto text-center px-6">
+          <h2 className="text-4xl font-extrabold text-gray-800">
+            Stay Updated with Our Newsletter
+          </h2>
+          <p className="mt-4 text-lg text-gray-700 w-1/2 mx-auto">
+            Subscribe to receive the latest updates, exclusive articles, and
+            premium content straight to your inbox. Join our growing community
+            today!
+          </p>
+          <form className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+            <input
+              type="email"
+              placeholder="Enter your email address"
+              className="input input-bordered w-full max-w-md px-4 py-3 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              type="submit"
+              className="bg-gradient-to-r from-blue-500 to-green-500 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:scale-105 transform transition-all duration-200"
+            >
+              Subscribe Now
+            </button>
+          </form>
+          <p className="mt-4 text-sm text-gray-600">
+            We value your privacy. Unsubscribe anytime with a single click.
+          </p>
+        </div>
+
+        {/* Decorative Illustration */}
+        <div className="mt-10 flex justify-center">
+          <img
+            src="\premium_photo-1682309526815-efe5d6225117.avif"
+            alt="Newsletter Subscription"
+            className="rounded-lg shadow-lg max-w-full h-28 md:h-96"
           />
-          <button
-            type="submit"
-            className="mt-4 bg-gradient-to-r from-blue-500 to-green-500 text-white py-2 px-4 rounded"
-          >
-            Subscribe
-          </button>
-        </form>
+        </div>
       </section>
 
       {/* Modal */}

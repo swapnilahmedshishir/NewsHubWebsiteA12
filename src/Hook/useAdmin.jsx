@@ -12,12 +12,15 @@ const useAdmin = () => {
     queryKey: [user?.email, "admin"],
     queryFn: async () => {
       if (!user?.email) return false;
-      // API call to check if the user is admin
-      const response = await axiosSecure.get(`/api/adminuser/${user?.email}`);
-
-      return response.data.isAdmin;
+      try {
+        const response = await axiosSecure.get(`/api/adminuser/${user?.email}`);
+        return response.data?.isAdmin ?? false;
+      } catch (error) {
+        console.error("Error fetching admin status:", error);
+        return false;
+      }
     },
-    enabled: !isLoading,
+    enabled: !!user?.email && !isLoading,
   });
 
   return [isAdmin, isAdminLoading];
