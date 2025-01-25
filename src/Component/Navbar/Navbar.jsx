@@ -6,16 +6,16 @@ import useAdmin from "../../Hook/useAdmin";
 import useLoginUserInfo from "../../Hook/useLoginUserInfo";
 
 const Navbar = () => {
-  const { user, logoutUser } = useContext(AppContext);
+  const { user, logoutUser, isLoading } = useContext(AppContext);
   const [isAdmin, isAdminLoading] = useAdmin();
   const [data, isUserLoading, refetch] = useLoginUserInfo();
 
   // Automatically refetch when certain conditions change
-  // useEffect(() => {
-  //   if (user) {
-  //     refetch();
-  //   }
-  // }, [user, refetch]);
+  useEffect(() => {
+    if (!isLoading) {
+      refetch();
+    }
+  }, [refetch]);
 
   // Function to check if a user is premium
   const isPremiumUser =

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import CountUp from "react-countup";
 import Hero from "./Hero";
 import useGetPublisherData from "../../Hook/useGetPublisherData";
@@ -10,6 +10,27 @@ const HomePage = () => {
   const [trendingArticles, setTrendingArticles] = useState([]);
   const [data] = useGetPublisherData();
   const axiosSequre = useAxiosSequre();
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+
+  // Show the modal after 10 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowModal(true);
+    }, 10000); // 10 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Handle the button click to navigate to the subscription page
+  const handleSubscribeClick = () => {
+    navigate("/subscription");
+  };
+
+  // Handle the cancel button to close the modal
+  const handleCancelClick = () => {
+    setShowModal(false);
+  };
 
   return (
     <div className="bg-gray-50">
@@ -101,6 +122,33 @@ const HomePage = () => {
           </button>
         </form>
       </section>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm">
+            <h3 className="text-xl font-bold mb-4">Subscribe Now</h3>
+            <p className="text-gray-600 mb-6">
+              Unlock unlimited access to premium articles with our subscription
+              plan.
+            </p>
+            <div className="flex justify-between gap-4">
+              <button
+                onClick={handleSubscribeClick}
+                className="bg-blue-600 text-white py-2 px-4 rounded"
+              >
+                Go to Subscription Page
+              </button>
+              <button
+                onClick={handleCancelClick}
+                className="bg-gray-600 text-white py-2 px-4 rounded"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

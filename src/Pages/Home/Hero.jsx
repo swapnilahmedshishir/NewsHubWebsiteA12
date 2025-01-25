@@ -13,7 +13,7 @@ const Hero = () => {
 
   // Fetch all articles
   const {
-    data: allArticles = [],
+    data: allArticles,
     isLoading,
     error,
   } = useQuery({
@@ -27,11 +27,11 @@ const Hero = () => {
   // Log API response to debug
   console.log("All Articles:", allArticles);
 
-  // Filter and sort articles for the slider
+  // Filter and sort articles for the slider.slice(0, 6);
   const trendingArticles = allArticles
     ?.filter((article) => article.status === "Approved" && article.views)
     .sort((a, b) => b.views - a.views)
-    .slice(0, 1); // Show max 6 articles
+    .slice(0, 6);
 
   console.log("Trending Articles:", trendingArticles);
 
