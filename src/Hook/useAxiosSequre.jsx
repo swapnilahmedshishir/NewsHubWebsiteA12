@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../Context/ContextProvider";
 
 const axiosSequre = axios.create({
-  baseURL: "http://localhost:5001",
+  // baseURL: "http://localhost:5001",
+  baseURL: "https://server-side-seven-beta.vercel.app",
   headers: {
     "Content-Type": "application/json",
     Authorization: `Bearer ${localStorage.getItem("token")}`,

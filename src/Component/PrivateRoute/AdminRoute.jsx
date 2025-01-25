@@ -7,8 +7,8 @@ const AdminRoute = ({ children }) => {
   const { user } = useContext(AppContext);
   const [isAdmin, isAdminLoading] = useAdmin();
   const loaction = useLocation();
-  // Show a loading state if admin status or user info is still loading
-  if (isAdminLoading || user === undefined) {
+
+  if (isAdminLoading || !user) {
     return <div>Loading...</div>;
   }
 

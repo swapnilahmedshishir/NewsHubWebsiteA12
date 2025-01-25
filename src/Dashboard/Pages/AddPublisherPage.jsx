@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { toast } from "react-toastify"; // Assuming you're using react-toastify for notifications
 import axios from "axios";
 import useAxiosSequre from "../../Hook/useAxiosSequre";
-import { useNavigate } from "react-router-dom";
 import useGetPublisherData from "../../Hook/useGetPublisherData";
 
 const AddPublisherPage = () => {

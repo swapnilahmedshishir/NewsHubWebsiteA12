@@ -12,11 +12,8 @@ import Plans from "./Plans";
 const HomePage = () => {
   const [data] = useGetPublisherData();
   const [userInfo] = useLoginUserInfo();
-  const axiosSequre = useAxiosSequre();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-
-  console.log(userInfo);
 
   // Check if the user has an active premium subscription
   const hasPremium =
@@ -24,7 +21,6 @@ const HomePage = () => {
 
   useEffect(() => {
     if (!hasPremium) {
-      // Show the modal after 10 seconds if the user does not have a premium subscription
       const timer = setTimeout(() => {
         setShowModal(true);
       }, 10000);

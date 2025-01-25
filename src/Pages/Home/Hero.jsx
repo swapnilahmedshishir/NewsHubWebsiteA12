@@ -7,9 +7,19 @@ import "swiper/css/autoplay";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import useAxiosSequre from "../../Hook/useAxiosSequre";
 import { useQuery } from "@tanstack/react-query";
+import useLoginUserInfo from "../../Hook/useLoginUserInfo";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
   const axiosSequre = useAxiosSequre();
+  const navigate = useNavigate();
+
+  const [userInfo] = useLoginUserInfo();
+
+  // Check if the user has an active subscription
+  const hasActiveSubscription = userInfo?.premiumTaken
+    ? new Date(userInfo.premiumTaken) > new Date()
+    : false;
 
   // Fetch all articles
   const {
@@ -55,11 +65,27 @@ const Hero = () => {
                 }}
               >
                 <div className="text-white font-montserrat text-center h-full p-5 bg-black/60 rounded-lg w-3/4">
-                  <h2 className="font-bold text-3xl mb-4">{article.title}</h2>
-                  <p className="mb-4">{article.description}</p>
-                  <button className="btn py-3 px-8 bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-3xl font-extrabold">
-                    Read More
-                  </button>
+                  <div className="mt-3 md:mt-12">
+                    <h2 className="font-bold text-3xl mb-4">{article.title}</h2>
+                    <p className="mb-4">
+                      {" "}
+                      {article.description.slice(0, 400)}...
+                    </p>
+
+                    <button
+                      onClick={() => navigate(`/articles/${article._id}`)}
+                      disabled={article.isPremium && !hasActiveSubscription}
+                      className={`btn py-3 px-8 rounded-3xl font-extrabold ${
+                        article.isPremium && !hasActiveSubscription
+                          ? "bg-gradient-to-r from-blue-400 to-green-500 text-white hover:from-blue-500 hover:to-green-600 cursor-not-allowed"
+                          : "bg-gradient-to-r from-blue-400 to-green-500 text-white hover:from-blue-500 hover:to-green-600"
+                      }`}
+                    >
+                      {article.isPremium && !hasActiveSubscription
+                        ? "Subscribe to View"
+                        : "Read More"}
+                    </button>
+                  </div>
                 </div>
               </div>
             </SwiperSlide>
