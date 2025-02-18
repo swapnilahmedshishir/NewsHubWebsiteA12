@@ -106,7 +106,7 @@ const UpdateArticlePage = () => {
     try {
       await axiosSecure.put(`/api/articles/${id}`, updatedArticle);
       toast.success("Article updated successfully!");
-      navigate("/");
+      navigate("/my-articles");
     } catch (error) {
       console.error("Error updating article:", error);
       toast.error("Failed to update the article.");
