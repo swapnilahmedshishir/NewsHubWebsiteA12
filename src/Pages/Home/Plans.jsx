@@ -21,12 +21,14 @@ const Plans = () => {
             <div className="bg-white shadow-lg rounded-lg p-6 border-t-4 border-blue-500">
               <h3 className="text-2xl font-bold text-gray-800">Free Plan</h3>
               <p className="mt-2 text-gray-600">Perfect for casual readers.</p>
-              <ul className="mt-4 list-disc list-inside text-gray-600">
+              <ul className="mt-4 list-none list-inside text-gray-900">
                 <li>Access to all free articles</li>
                 <li>Limited views per month</li>
                 <li>Basic customer support</li>
               </ul>
-              <p className="mt-6 text-3xl font-bold text-gray-800">Free</p>
+              <p className="mt-10 mb-2 text-3xl font-bold text-gray-800">
+                Free
+              </p>
               <NavLink
                 to="/subscription"
                 className="mt-4 inline-block bg-gradient-to-r from-blue-500 to-green-500 text-white py-2 px-6 rounded"
@@ -41,7 +43,7 @@ const Plans = () => {
               <p className="mt-2 text-gray-600">
                 For dedicated readers who want more.
               </p>
-              <ul className="mt-4 list-disc list-inside text-gray-600">
+              <ul className="mt-4 list-none list-inside text-gray-900">
                 <li>Unlimited article views</li>
                 <li>Exclusive premium articles</li>
                 <li>Ad-free reading experience</li>
@@ -66,7 +68,7 @@ const Plans = () => {
               <p className="mt-2 text-gray-600">
                 Ideal for businesses and teams.
               </p>
-              <ul className="mt-4 list-disc list-inside text-gray-600">
+              <ul className="mt-4 list-none list-inside text-gray-900">
                 <li>Customized content solutions</li>
                 <li>Unlimited team access</li>
                 <li>Dedicated account manager</li>

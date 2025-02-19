@@ -8,6 +8,7 @@ import Statistics from "./Statistics";
 import useLoginUserInfo from "../../Hook/useLoginUserInfo";
 import WhyChoose from "./WhyChoose";
 import Plans from "./Plans";
+import ClientReview from "./ClientReview";
 
 const HomePage = () => {
   const [data] = useGetPublisherData();
@@ -70,6 +71,9 @@ const HomePage = () => {
       <Plans />
 
       {/* Unique Sections */}
+
+      {/* client review  */}
+      <ClientReview />
       {/* why choose  */}
       <WhyChoose />
       {/* news letter  */}
@@ -78,6 +82,15 @@ const HomePage = () => {
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800">
             Stay Updated with Our Newsletter
           </h2>
+          {/* Decorative Illustration */}
+          <div className="mt-10 flex justify-center">
+            <img
+              // src="\premium_photo-1682309526815-efe5d6225117.avif"
+              src="\newsLeter.png"
+              alt="Newsletter Subscription"
+              className="rounded-lg shadow-lg w-1/2 h-32 md:h-96"
+            />
+          </div>
           <p className="mt-4 md:text-lg text-gray-700 md:w-1/2 mx-auto">
             Subscribe to receive the latest updates, exclusive articles, and
             premium content straight to your inbox. Join our growing community
@@ -99,15 +112,6 @@ const HomePage = () => {
           <p className="mt-4 text-sm text-gray-600">
             We value your privacy. Unsubscribe anytime with a single click.
           </p>
-        </div>
-
-        {/* Decorative Illustration */}
-        <div className="mt-10 flex justify-center">
-          <img
-            src="\premium_photo-1682309526815-efe5d6225117.avif"
-            alt="Newsletter Subscription"
-            className="rounded-lg shadow-lg max-w-full h-28 md:h-96"
-          />
         </div>
       </section>
 

@@ -40,7 +40,7 @@ const Statistics = () => {
   return (
     <>
       {/* Statistics Section */}
-      <section className="py-10 bg-white">
+      <section className="py-16 bg-gradient-to-r from-blue-100 to-blue-200">
         <h2 className="text-3xl font-bold text-center text-gray-800">
           Statistics
         </h2>

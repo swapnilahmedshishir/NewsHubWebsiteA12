@@ -2,7 +2,7 @@ import React from "react";
 
 const WhyChoose = () => {
   return (
-    <section className="py-16 bg-gradient-to-r from-blue-50 to-blue-100">
+    <section className="py-16 bg-gradient-to-r from-gray-50 to-gray-100">
       <div className="container mx-auto px-6 text-center">
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800">
           Why Choose Us?
