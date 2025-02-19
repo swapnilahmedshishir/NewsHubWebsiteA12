@@ -50,7 +50,8 @@ const AllArticlesPage = () => {
     (article) => article.status === "Approved"
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return <div className="pt-[4rem] md:pt-[5rem]">Loading...</div>;
   if (error) return <div>Error loading articles: {error.message}</div>;
 
   return (

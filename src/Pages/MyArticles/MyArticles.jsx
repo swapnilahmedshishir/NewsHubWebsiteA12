@@ -85,7 +85,7 @@ const MyArticles = () => {
 
   if (articles.length === 0) {
     return (
-      <div className="text-center mt-10 text-gray-500">
+      <div className="text-center md:mt-10 text-gray-500 p-[5rem] md:p-[10.2rem]">
         You have not added any articles.
       </div>
     );

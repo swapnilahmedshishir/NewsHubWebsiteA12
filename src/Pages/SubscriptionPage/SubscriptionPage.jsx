@@ -37,7 +37,7 @@ const SubscriptionPage = () => {
       </div>
 
       {/* Subscription Options */}
-      <div className="bg-white rounded-lg shadow-lg p-6 w-96">
+      <div className="bg-white rounded-lg shadow-lg p-6 md:w-96">
         <h1 className="text-center text-lg font-bold text-gray-800 mb-4">
           Choose Your Subscription
         </h1>
@@ -60,7 +60,7 @@ const SubscriptionPage = () => {
         </div>
         <button
           onClick={handleSubscription}
-          className="w-full bg-gradient-to-r from-blue-400 to-green-500 text-white py-2 rounded mt-4 hover:bg-gradient-to-r from-blue-500 to-green-500"
+          className="w-full bg-gradient-to-r from-blue-400 to-green-500 text-white py-2 rounded mt-4 hover:bg-gradient-to-r hover:from-blue-500 hover:to-green-500"
         >
           Subscribe Now
         </button>
