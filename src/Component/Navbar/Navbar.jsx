@@ -159,13 +159,19 @@ const Navbar = () => {
                 referrerPolicy="no-referrer"
               />
             </NavLink>
-            <button className="btn btn-secondary" onClick={handleLogout}>
+            <button
+              className="btn bg-gradient-to-r from-blue-400 to-green-500"
+              onClick={handleLogout}
+            >
               Logout
             </button>
           </div>
         ) : (
           <div className="flex gap-2">
-            <NavLink to="/login" className="btn btn-primary">
+            <NavLink
+              to="/login"
+              className="btn bg-gradient-to-r from-blue-400 to-green-500"
+            >
               Login
             </NavLink>
             <NavLink to="/register" className="btn btn-outline">
