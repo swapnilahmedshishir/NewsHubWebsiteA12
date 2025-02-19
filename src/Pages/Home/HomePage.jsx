@@ -85,7 +85,6 @@ const HomePage = () => {
           {/* Decorative Illustration */}
           <div className="mt-10 flex justify-center">
             <img
-              // src="\premium_photo-1682309526815-efe5d6225117.avif"
               src="\newsLeter.png"
               alt="Newsletter Subscription"
               className="rounded-lg shadow-lg w-1/2 h-32 md:h-96"
