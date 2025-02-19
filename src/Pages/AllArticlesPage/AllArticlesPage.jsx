@@ -51,7 +51,11 @@ const AllArticlesPage = () => {
   );
 
   if (isLoading)
-    return <div className="pt-[4rem] md:pt-[5rem]">Loading...</div>;
+    return (
+      <div className="pt-[4rem] md:pt-[5rem]">
+        <span className="loading loading-bars loading-lg"></span>Loading...
+      </div>
+    );
   if (error) return <div>Error loading articles: {error.message}</div>;
 
   return (

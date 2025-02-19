@@ -40,7 +40,12 @@ const Hero = () => {
     .sort((a, b) => b.views - a.views)
     .slice(0, 6);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return (
+      <p>
+        <span className="loading loading-bars loading-lg"></span>Loading...
+      </p>
+    );
   if (error) return <p>Error loading articles: {error.message}</p>;
 
   return (

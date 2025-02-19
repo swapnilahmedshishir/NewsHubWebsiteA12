@@ -47,7 +47,9 @@ const AllUsersPage = () => {
     <div>
       <h1 className="text-2xl font-bold mb-4">All Users</h1>
       {isLoading ? (
-        <p>Loading...</p>
+        <p>
+          <span className="loading loading-bars loading-lg"></span>Loading...
+        </p>
       ) : error ? (
         <p className="text-red-500">An error occurred while fetching users.</p>
       ) : (

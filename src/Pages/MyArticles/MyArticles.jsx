@@ -78,7 +78,7 @@ const MyArticles = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        Loading...
+        <span className="loading loading-bars loading-lg"></span>Loading...
       </div>
     );
   }

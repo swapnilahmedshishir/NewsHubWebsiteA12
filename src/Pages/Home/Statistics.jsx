@@ -34,7 +34,12 @@ const Statistics = () => {
   const premiumUsers = users.filter(isPremiumUser);
   const normalUsers = users.filter((user) => !isPremiumUser(user));
 
-  if (userLoadding) return <p>Loading...</p>;
+  if (userLoadding)
+    return (
+      <p>
+        <span className="loading loading-bars loading-lg"></span>Loading...
+      </p>
+    );
   if (error) return <p>Error: {error.message}</p>;
 
   return (
