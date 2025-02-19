@@ -15,6 +15,7 @@ const HomePage = () => {
   const [userInfo] = useLoginUserInfo();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
 
   // Check if the user has an active premium subscription
   const hasPremium =
@@ -36,6 +37,11 @@ const HomePage = () => {
 
   const handleCancelClick = () => {
     setShowModal(false);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted email:", email);
   };
 
   return (
@@ -95,9 +101,15 @@ const HomePage = () => {
             premium content straight to your inbox. Join our growing community
             today!
           </p>
-          <form className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
+          <form
+            onSubmit={handleSubmit}
+            className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"
+          >
             <input
               type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email address"
               className="input input-bordered w-full max-w-md px-4 py-3 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
             />

@@ -19,6 +19,7 @@ import AllDasbordArticlesPage from "../../Dashboard/Pages/AllDasbordArticlesPage
 import MyArticles from "../../Pages/MyArticles/MyArticles";
 import UpdateArticalPage from "../../Pages/UpdateArticalPage/UpdateArticalPage";
 import AdminRoute from "../PrivateRoute/AdminRoute";
+import AdminInfo from "../../Dashboard/Pages/AdminInfo";
 
 const RoutersItems = [
   {
@@ -116,6 +117,7 @@ const RoutersItems = [
       },
     ],
   },
+  // admin routes
   {
     path: "dashboard",
     element: (
@@ -153,6 +155,14 @@ const RoutersItems = [
         element: (
           <AdminRoute>
             <AllDasbordArticlesPage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin",
+        element: (
+          <AdminRoute>
+            <AdminInfo />
           </AdminRoute>
         ),
       },

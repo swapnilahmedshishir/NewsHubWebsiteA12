@@ -7,6 +7,7 @@ import {
   FaUserPlus,
   FaHome,
 } from "react-icons/fa"; // React Icons
+import { RxAvatar } from "react-icons/rx";
 import useAdmin from "../../Hook/useAdmin";
 
 const Dashboard = () => {
@@ -58,6 +59,15 @@ const Dashboard = () => {
             >
               <FaHome className="mr-2" />
               Website
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="admin"
+              className="flex items-center p-2 rounded-md hover:bg-indigo-700"
+            >
+              <RxAvatar className="mr-2" />
+              Admin
             </NavLink>
           </li>
         </ul>

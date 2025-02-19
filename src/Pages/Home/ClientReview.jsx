@@ -72,12 +72,13 @@ const ClientReview = () => {
             modules={[Navigation, Pagination, Autoplay]}
             spaceBetween={25}
             slidesPerView={1}
-            autoplay={{ delay: 3000 }}
-            pagination={{ clickable: true }}
+            // autoplay={{ delay: 3000 }}
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            loop={true}
             breakpoints={{
               640: { slidesPerView: 1 },
               768: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
+              1024: { slidesPerView: 2 },
             }}
             className="px-5"
           >
