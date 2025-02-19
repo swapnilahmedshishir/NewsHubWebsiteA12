@@ -92,7 +92,7 @@ const MyArticles = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto px-4 py-6 pt-[4rem] md:pt-[5rem]">
       <h1 className="text-3xl font-bold text-center mb-6">My Articles</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">

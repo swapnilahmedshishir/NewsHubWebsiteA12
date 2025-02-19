@@ -4,7 +4,7 @@ const WhyChoose = () => {
   return (
     <section className="py-16 bg-gradient-to-r from-blue-50 to-blue-100">
       <div className="container mx-auto px-6 text-center">
-        <h2 className="text-4xl font-extrabold text-gray-800">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800">
           Why Choose Us?
         </h2>
         <p className="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">

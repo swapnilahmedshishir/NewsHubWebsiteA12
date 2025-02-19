@@ -7,7 +7,7 @@ const Plans = () => {
       {/* Plans Section */}
       <section className="py-16 bg-gradient-to-r from-gray-50 to-gray-100">
         <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-extrabold text-gray-800">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800">
             Choose Your Plan
           </h2>
           <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">

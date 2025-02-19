@@ -32,7 +32,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar bg-base-100 shadow-md">
+    <nav className="navbar bg-base-100 shadow-md fixed z-[999]">
       {/* Navbar Start */}
       <div className="navbar-start">
         <div className="dropdown lg:hidden">

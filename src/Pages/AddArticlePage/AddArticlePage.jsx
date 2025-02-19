@@ -121,52 +121,8 @@ const AddArticlePage = () => {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!userLoginInfo) {
-  //     toast.error("User information not found. Please log in.");
-  //     return;
-  //   }
-
-  //   // Check if the user is a premium user
-  //   const isPremium =
-  //     userLoginInfo.premiumTaken &&
-  //     new Date(userLoginInfo.premiumTaken).getTime() > new Date().getTime();
-
-  //   console.log(isPremium);
-
-  //   toast.info("Uploading image...");
-  //   const uploadedImageUrl = await handleImageUpload();
-
-  //   if (!uploadedImageUrl) {
-  //     toast.error("Cannot submit the article without a valid image.");
-  //     return;
-  //   }
-
-  //   const articleData = {
-  //     title,
-  //     image: uploadedImageUrl,
-  //     authorName: user?.displayName,
-  //     authorEmail: user?.email,
-  //     authorPhoto: user?.photoURL,
-  //     publisher: selectedPublisher?.label,
-  //     tags: tags.map((tag) => tag.value),
-  //     description,
-  //   };
-
-  //   try {
-  //     await axiosPublic.post(`/api/articles`, articleData);
-  //     toast.success("Article submitted successfully! Awaiting admin approval.");
-  //     navigate("/");
-  //   } catch (error) {
-  //     console.error("Error submitting article:", error);
-  //     toast.error("Failed to submit the article. Please try again.");
-  //   }
-  // };
-
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 pt-[4rem] md:pt-[5rem]">
       <h1 className="text-2xl font-bold mb-4">Add New Article</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input

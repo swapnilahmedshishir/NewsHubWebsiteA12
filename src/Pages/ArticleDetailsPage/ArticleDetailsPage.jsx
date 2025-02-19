@@ -48,9 +48,10 @@ const ArticleDetailsPage = () => {
   if (error) {
     return <div className="text-center py-10 text-red-500">{error}</div>;
   }
+  const paragraphs = article.description.match(/.{1,500}/g) || [];
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto px-4 py-6 pt-[4rem] md:pt-[5rem]">
       {/* Article Details */}
       <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         <img
@@ -60,18 +61,27 @@ const ArticleDetailsPage = () => {
         />
         <div className="p-6">
           <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
-          <p className="text-gray-600 mb-2">
-            <span className="font-medium">Published By:</span>{" "}
-            {article.publisher}
-          </p>
-          <p className="text-gray-600 mb-2">
-            <span className="font-medium">Posted On:</span>{" "}
-            {new Date(article.postedDate).toLocaleDateString()}
-          </p>
+          <div className="flex justify-between">
+            <p className="text-gray-600 mb-2">
+              <span className="font-medium">Published By:</span>{" "}
+              {article.publisher}
+            </p>
+            <p className="text-gray-600 mb-2">
+              <span className="font-medium">Posted On:</span>{" "}
+              {new Date(article.postedDate).toLocaleDateString()}
+            </p>
+          </div>
+          <div>
+            {paragraphs.map((para, index) => (
+              <p key={index} className="text-gray-700 mb-6">
+                {para}
+              </p>
+            ))}
+          </div>
+
           <p className="text-gray-600 mb-4">
             <span className="font-medium">Tags:</span> {article.tags.join(", ")}
           </p>
-          <p className="text-gray-700 mb-6">{article.description}</p>
         </div>
 
         {/* Author Section */}

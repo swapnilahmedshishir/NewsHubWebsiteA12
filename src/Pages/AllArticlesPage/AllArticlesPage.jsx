@@ -54,7 +54,7 @@ const AllArticlesPage = () => {
   if (error) return <div>Error loading articles: {error.message}</div>;
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 pt-[4rem] md:pt-[5rem]">
       <h1 className="text-3xl font-bold mb-6">All Articles</h1>
 
       {/* Filters */}

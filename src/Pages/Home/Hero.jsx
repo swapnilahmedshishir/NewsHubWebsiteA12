@@ -44,7 +44,7 @@ const Hero = () => {
   if (error) return <p>Error loading articles: {error.message}</p>;
 
   return (
-    <section>
+    <section className="pt-[4rem] md:pt-[4.5rem]">
       {trendingArticles?.length > 0 ? (
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
@@ -64,12 +64,14 @@ const Hero = () => {
                   })`,
                 }}
               >
-                <div className="text-white font-montserrat text-center h-full p-5 bg-black/60 rounded-lg w-3/4">
-                  <div className="mt-3 md:mt-12">
-                    <h2 className="font-bold text-3xl mb-4">{article.title}</h2>
-                    <p className="mb-4">
+                <div className="text-white font-montserrat text-center md:h-full p-5 bg-black/60 rounded-lg w-3/4">
+                  <div className="mt-2 md:mt-12">
+                    <h2 className="font-bold text-lg md:text-3xl md:mb-4">
+                      {article.title}
+                    </h2>
+                    <p className="mb-4 text-xs">
                       {" "}
-                      {article.description.slice(0, 400)}...
+                      {article.description.slice(0, 150)}...
                     </p>
 
                     <button

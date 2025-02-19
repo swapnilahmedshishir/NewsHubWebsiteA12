@@ -75,10 +75,10 @@ const HomePage = () => {
       {/* news letter  */}
       <section className="py-16 bg-gradient-to-r from-blue-100 to-blue-200">
         <div className="container mx-auto text-center px-6">
-          <h2 className="text-4xl font-extrabold text-gray-800">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800">
             Stay Updated with Our Newsletter
           </h2>
-          <p className="mt-4 text-lg text-gray-700 w-1/2 mx-auto">
+          <p className="mt-4 md:text-lg text-gray-700 md:w-1/2 mx-auto">
             Subscribe to receive the latest updates, exclusive articles, and
             premium content straight to your inbox. Join our growing community
             today!
